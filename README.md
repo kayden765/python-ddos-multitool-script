@@ -1,6 +1,6 @@
 FOR THE PHONEINFOGA OPTION TO WORK YOU MUST DOWNLOAD PHONE INFOGA EXE FILE FROM THERE GITHUB AND HAVE IT IN THE SAME FOLDER AS THE MAINFRAME
 
-
+updates will be coming in the near future please if you have any issues please state them in the issues tab and i will work on fixing them
 
 # python-security-multitool-script
 A standalone, auto-elevating Python security multitool and network toolkit for defensive system audits, passive recon, packet sniffing, and offline infrastructure profiling.
