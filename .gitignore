@@ -1,15 +1,12 @@
 # ==============================================================================
 # MAINFRAME INTERACTIVE AUTOMATED EXCLUSION BLOCKS
 # ==============================================================================
-
 # Block automated session activity log text output directories permanently
 logs/
 *.log
 session_*.txt
-
 # Block local file integrity baseline metrics snapshot registries
 fims_manifest.json
-
 # Python local operational compiler artifacts and environmental variables
 __pycache__/
 *.pyc
