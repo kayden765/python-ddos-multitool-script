@@ -1,3 +1,4 @@
+
 # ==============================================================================
 # MAINFRAME INTERACTIVE AUTOMATED EXCLUSION BLOCKS
 # ==============================================================================
@@ -11,3 +12,84 @@ fims_manifest.json
 __pycache__/
 *.pyc
 .env
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+# Logs - NEVER COMMIT THESE
+logs/
+*.log
+session_*.txt
+*.log.*
+# Input data - NEVER COMMIT THESE
+input/brutef.txt
+input/proxies.txt
+input/*.txt
+# Local image logger
+core/image_logger/logs/
+core/image_logger/*.log
+# Vercel deployment
+vercel-image-logger/.vercel/
+vercel-image-logger/node_modules/
+vercel-image-logger/.env
+vercel-image-logger/.env.local
+vercel-image-logger/out/
+vercel-image-logger/dist/
+# Secrets and credentials
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+config/credentials.py
+# Test files
+test_*.py
+*_test.py
+input/test_*.py
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
