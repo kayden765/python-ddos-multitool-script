@@ -272,8 +272,9 @@ class MainframeUI:
         print("  [8] Advanced RDAP Registration Infrastructure Allocation Mapper")
         print("  [9] HTTP Header Security Compliance & Hardening Auditor")
         print("  [10] DNS-over-HTTPS (DoH) Client Resolver Subsystem")
+        print("  [11] IP Address Geolocation & Metadata Lookup")
         print("\n" + f"{Colors.CYAN}[NAVIGATION FRAMEWORK]{Colors.RESET}")
-        print("  [11] Return to Main System Directory Core")
+        print("  [12] Return to Main System Directory Core")
         print(f"\n{Colors.BOLD}{Colors.AMBER}" + "-" * 80 + f"{Colors.RESET}")
 
     @staticmethod
@@ -821,6 +822,52 @@ def run_doh_resolver():
         
     print("-" * 75)
     input(f"\nQuery complete. Press Enter to load submenu options...")
+
+def run_ip_lookup():
+    """Looks up IP address geolocation and metadata using ip-api.com."""
+    print(f"\n{Colors.AMBER}[MODULE 11 // IP ADDRESS GEOLOCATION & METADATA LOOKUP]{Colors.RESET}")
+    target_ip = input("\nEnter IP address to lookup: ").strip()
+    if not target_ip:
+        return
+    
+    print(f"\n{Colors.GREEN}Querying ip-api.com for IP metadata...{Colors.RESET}")
+    url = f"http://ip-api.com/json/{target_ip}?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,reverse,mobile,proxy,hosting"
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mainframe-IP-Lookup'})
+    
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            raw_data = response.read().decode('utf-8')
+            parsed = json.loads(raw_data)
+            
+            if parsed.get("status") == "fail":
+                print(f"\n{Colors.RED}[!] Lookup failed: {parsed.get('message', 'Unknown error')}{Colors.RESET}")
+                input(f"\nPress Enter to load submenu options...")
+                return
+            
+            print(f"\n{Colors.GREEN}[✓] IP LOOKUP RESULTS // {target_ip}{Colors.RESET}")
+            print("-" * 75)
+            print(f"{Colors.BOLD}{'FIELD':<20}{'VALUE'}{Colors.RESET}")
+            print("-" * 75)
+            print(f"{'IP Address':<20}{Colors.CYAN}{target_ip}{Colors.RESET}")
+            print(f"{'Country':<20}{Colors.CYAN}{parsed.get('country', 'N/A')}{Colors.RESET}")
+            print(f"{'Country Code':<20}{Colors.CYAN}{parsed.get('countryCode', 'N/A')}{Colors.RESET}")
+            print(f"{'Region':<20}{Colors.CYAN}{parsed.get('regionName', 'N/A')}{Colors.RESET}")
+            print(f"{'City':<20}{Colors.CYAN}{parsed.get('city', 'N/A')}{Colors.RESET}")
+            print(f"{'ZIP Code':<20}{Colors.CYAN}{parsed.get('zip', 'N/A')}{Colors.RESET}")
+            print(f"{'Coordinates':<20}{Colors.CYAN}{parsed.get('lat', 'N/A')}, {parsed.get('lon', 'N/A')}{Colors.RESET}")
+            print(f"{'Timezone':<20}{Colors.CYAN}{parsed.get('timezone', 'N/A')}{Colors.RESET}")
+            print(f"{'ISP':<20}{Colors.CYAN}{parsed.get('isp', 'N/A')}{Colors.RESET}")
+            print(f"{'Organization':<20}{Colors.CYAN}{parsed.get('org', 'N/A')}{Colors.RESET}")
+            print(f"{'AS Number':<20}{Colors.CYAN}{parsed.get('as', 'N/A')}{Colors.RESET}")
+            print(f"{'Reverse DNS':<20}{Colors.CYAN}{parsed.get('reverse', 'N/A')}{Colors.RESET}")
+            print(f"{'Mobile':<20}{Colors.CYAN}{str(parsed.get('mobile', 'N/A'))}{Colors.RESET}")
+            print(f"{'Proxy':<20}{Colors.CYAN}{str(parsed.get('proxy', 'N/A'))}{Colors.RESET}")
+            print(f"{'Hosting':<20}{Colors.CYAN}{str(parsed.get('hosting', 'N/A'))}{Colors.RESET}")
+            print("-" * 75)
+    except Exception as e:
+        print(f"\n{Colors.RED}[!] IP lookup failed: {e}{Colors.RESET}")
+    
+    input(f"\nPress Enter to load submenu options...")
 
 # ================================================================================
 # SUB-DIRECTORY 02 ENGINE ROUTINES (EXTERNAL OSINT CORES)
@@ -1894,6 +1941,8 @@ def handle_category_deck(deck_id):
             elif operator_input == "10":
                 run_doh_resolver()
             elif operator_input == "11":
+                run_ip_lookup()
+            elif operator_input == "12":
                 break
                 
         # --- ENGINE PIPELINE 02: EXT-OSINT UTILITIES ---
@@ -2165,9 +2214,16 @@ def monitor_vercel_logs(public_url):
         while True:
             try:
                 import urllib.request
-                req = urllib.request.Request(logs_url, headers={'User-Agent': 'Mainframe-Monitor'})
+                req = urllib.request.Request(logs_url, headers={
+                    'User-Agent': 'Mainframe-Logs-Viewer',
+                    'Accept-Encoding': 'identity'
+                })
                 with urllib.request.urlopen(req, timeout=5) as resp:
-                    logs = json.loads(resp.read().decode('utf-8'))
+                    raw = resp.read()
+                    try:
+                        logs = json.loads(raw.decode('utf-8'))
+                    except (UnicodeDecodeError, json.JSONDecodeError):
+                        logs = []
                 
                 if not header_printed:
                     print(f"\n{Back.GREEN}{Fore.BLACK}{Style.BRIGHT} MONITORING VERCEl LOGS {Back.RESET}{Fore.RESET}{Style.RESET_ALL}")
