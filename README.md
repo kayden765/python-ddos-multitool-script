@@ -1,164 +1,562 @@
-# MAINFRAME // SEC-OPERATIONS INTERACTIVE TERMINAL MULTITOOL
+# MAINFRAME // COMPREHENSIVE SECURITY RECONNAISSANCE ENGINE
 
-An advanced, multi-directory terminal auditing shell and network diagnostics mainframe built natively in Python. Engineered exclusively for defensive network administration, compliance monitoring, and passive security analysis, this zero-dependency platform consolidates 30 production-grade scanning, profiling, and open-source intelligence (OSINT) engines into a single operational interface.
-
----
-## 🛠️ Quick Start & Usage Guide
-
-Follow these simple steps to run and navigate your 30-in-1 security multitool mainframe:
-
-[1] Install System Dependencies
-    Before launching the script for the first time, synchronize your Python environment using the requirements profile:
-    pip install -r requirements.txt
-
-    (Note: To utilize the PhoneInfoga module, ensure your native pre-compiled 'phoneinfoga' binary file is placed directly inside the script's active folder directory).
-
-[2] Launch with Elevated Administrative/Root Privileges
-    Because low-level packet tracking (Inbound Network Packet Monitor Engine) and local socket table lookups require full operating system kernel access, you must run your terminal with administrator privileges:
-    - Windows: Search for Command Prompt or PowerShell, right-click it, select "Run as Administrator", and execute:
-      python mainframe.py
-    - Linux / macOS: Launch the script natively using the standard sudo command container:
-      sudo python3 mainframe.py
-
-[3] Live Visual Title Bar Scrambler
-    Once the mainframe validates your privileges and boots up, it will automatically spin up a background worker thread that continuously randomizes cryptographic tokens directly inside your terminal window's top title bar for a distinct security deck aesthetic.
-
-[4] Navigate the Directory Submenus
-    The console architecture uses a multi-tier sub-menu routing system to keep your terminal layout clean and uncrowded:
-    - Type '1', '2', '3', or '4' at the primary control prompt (mainframe@operator_console:~#) to dive into a specialized category sub-directory.
-    - Inside any sub-directory, type the matching number to execute a tool.
-    - To exit a sub-directory and return to the root menu layout, choose the navigation number ('6', '9', or '10') specified by the selection hints on your screen.
-
-[5] Review Active Session Activity Logs
-    - Every command execution, tested target parameter, and screen output is mirrored automatically in real-time.
-    - Look inside the dynamically created "/logs" folder right next to your script to read past text files. 
-    - The dual-stream logging core automatically strips out messy ANSI color codes before saving to disk, leaving you with pristine, cleartext session archives.
-
-
-## 🏗️ Architectural Overview & Design Parameters
-
-* **Zero-Dependency Production Baseline:** Operates entirely out-of-the-box utilizing Python standard library structures. Requires zero mandatory external installations for all core routing, auditing, and sniffing systems.
-* **Thread-Safe Dual-Stream Intercept Logging:** Features an automated, non-blocking real-time capture module that intercepts standard console output stream arrays. It writes parallel logs to local timestamped cleartext files inside a dynamically generated `/logs` directory, systematically stripping raw ANSI layout formatting colors using regex verification.
-* **Process Security Verification Gate:** Enforces administrative rights validation checks at boot using Windows `ctypes` or platform-native checking loops to guarantee safe initialization of low-level packet mirrors.
-* **Background Micro-Daemon Visual Matrix:** Spawns a dedicated background micro-thread daemon that shuffles randomized cryptographic tokens into the window title bar dynamically to maintain an operational aesthetic while completely bypassing session log history streams.
+**Version:** v5.90  
+**Architecture:** Multi-Tier Nested Subsystem Shell (Directory-Driven Layout)  
+**Platform:** Cross-Platform Windows/Linux/macOS  
+**Python:** 3.8+  
 
 ---
 
-## 🛠️ Deep Feature Specification Blueprint
+## TABLE OF CONTENTS
 
-The application architecture is divided into four highly organized operational sub-directories to manage terminal screen estate effectively:
+1. [Overview](#overview)
+2. [Architecture](#architecture)
+3. [Installation](#installation)
+4. [Main System Directory Core](#main-system-directory-core)
+5. [Sub-Directory 01 — Network Infrastructure & Endpoint Recon](#sub-directory-01--network-infrastructure--endpoint-recon)
+6. [Sub-Directory 02 — External OSINT & Target Record Profilers](#sub-directory-02--external-osint--target-record-profilers)
+7. [Sub-Directory 03 — Local Data Traffic, Security Audits & Utilities](#sub-directory-03--local-data-traffic-security-audits--utilities)
+8. [Sub-Directory 04 — Advanced Infrastructure Audits & Integrity](#sub-directory-04--advanced-infrastructure-audits--integrity)
+9. [Sub-Directory 05 — Attack Vectors & Exploit Frameworks](#sub-directory-05--attack-vectors--exploit-frameworks)
+10. [Image Logger — Vercel Deployment](#image-logger--vercel-deployment)
+11. [Logging & Privacy](#logging--privacy)
+12. [Configuration & Customization](#configuration--customization)
+13. [Dependencies](#dependencies)
+14. [Disclaimer](#disclaimer)
 
-### 📡 Sub-Directory 01: Network Infrastructure & Endpoint Recon Cores
+---
 
-1. **High-Speed Rainbow Echo Pinger Latency Monitor**
-   * *Mechanism:* Constructs platform-native ICMP echo requests using automated shell runtime execution parameters.
-   * *Capabilities:* Implements strict text parsing criteria targeting the stdout stream to isolate valid trip metrics (`ttl=` or `time=`), completely filtering out false-positive gateway replies and unreachable codes.
+## OVERVIEW
 
-2. **Reverse DNS Infrastructure Resolver (IP-to-Host PTR Check)**
-   * *Mechanism:* Employs low-level socket nameserver hooks via `socket.gethostbyaddr()`.
-   * *Capabilities:* Resolves explicit dotted-quad IPv4 strings back to their registered pointer (PTR) resource files, mapping assigned hostnames, structural domain aliases, and alternate interface bindings arrays.
+MAINFRAME is a comprehensive security reconnaissance and testing platform designed for authorized security assessments, penetration testing, and educational purposes. It provides a unified terminal interface for network analysis, OSINT gathering, local system auditing, and controlled attack vector testing.
 
-3. **Multi-Threaded Target Service Port Scanner & Vulnerability Profiler**
-   * *Mechanism:* Deploys a thread pool socket execution pool using non-blocking TCP three-way handshake connection attempts (`socket.connect_ex`).
-   * *Capabilities:* Concurrently audits core networking and administrative interfaces (Ports 21-8443). Features an internal cross-reference intelligence database that maps exposed ports to known software liabilities and specific defensive mitigation guidelines.
+The tool is organized into five primary operational directories, each containing specialized modules for different aspects of security testing.
 
-4. **Local Subnet Parallel Ping Sweeper Matrix**
-   * *Mechanism:* Fires rapid, low-overhead ICMP echo sweeps asynchronously across thread configurations.
-   * *Capabilities:* Dispatches concurrent network sweeps spanning local IP address limits (`.1` to `.254`) to generate absolute physical device visibility maps without colliding with downstream console buffers.
+---
 
-5. **Network Application Service Banner Grabber Auditor**
-   * *Mechanism:* Opens direct socket streams to target endpoints and forces request payloads.
-   * *Capabilities:* Intercepts protocol header configurations and application configuration parameters, explicitly sending `HEAD` requests to web endpoints to capture detailed server build metrics.
+## ARCHITECTURE
 
-6. **DNS Reconnaissance Explorer Matrix (AddrInfo Lookup)**
-   * *Mechanism:* Calls system name service infrastructure abstractions via `socket.getaddrinfo()`.
-   * *Capabilities:* Resolves and isolates alternative protocol family families, interface maps, and transport route destinations to map out domain name configurations.
+```
+cybertool/
+├── mainframe.py                 # Core orchestration engine & UI
+├── core/
+│   ├── etc/
+│   │   ├── settings.py          # Configuration management
+│   │   └── functions.py         # UI helpers, banners, menus
+│   ├── ddos_attack/
+│   │   └── ddos.py              # Beast Mode DDoS engine
+│   ├── brute_force/
+│   │   └── bruteforce.py        # Brute force attack module
+│   ├── image_logger/
+│   │   └── imagelogger.py       # Local image logger server
+│   ├── sms_spam/
+│   │   └── sms.py               # SMS bombing module
+│   ├── email_spam/
+│   │   └── email_attack.py      # Email flood module
+│   ├── telegram_spam/
+│   │   └── telegram.py          # Telegram injection module
+│   ├── discord_spam/
+│   │   └── discord.py           # Discord spam module
+│   ├── network/                 # Network recon modules
+│   ├── osint/                   # OSINT modules
+│   ├── utilities/               # Local utility modules
+│   └── advanced/                # Advanced audit modules
+├── vercel-image-logger/
+│   ├── api/
+│   │   └── track.js             # Vercel serverless function
+│   ├── vercel.json              # Vercel routing config
+│   └── package.json             # Project metadata
+├── input/
+│   ├── brutef.txt               # Brute force wordlist
+│   └── proxies.txt              # Proxy list (optional)
+├── logs/                        # Session logs (gitignored)
+└── README.md
+```
 
-7. **Passive Domain Subdomain Discovery Engine**
-   * *Mechanism:* Queries public certificate transparency logging infrastructure via secure HTTPS json feeds (`crt.sh`).
-   * *Capabilities:* Passive data parsing that extracts verified, historically logged subdomains for target entities without transmitting packet traffic to the target infrastructure.
+### Key Design Principles
 
-8. **Advanced RDAP Registration Infrastructure Allocation Mapper**
-   * *Mechanism:* Connects to open Registration Data Access Protocol (RDAP) servers natively using standard network wrappers.
-   * *Capabilities:* Evaluates autonomous network range allocations, country codes, administrative internet registry boundaries, and original provider provider profiles.
+- **Modular Architecture:** Each attack/recon module is isolated in its own directory under `core/`
+- **Lazy Imports:** Optional modules are imported independently so missing dependencies don't break the entire tool
+- **Dual-Stream Logging:** All terminal output is simultaneously logged to disk
+- **Cross-Platform:** Supports Windows, Linux, and macOS with platform-specific optimizations
+- **Auto-Elevation:** Automatically requests Administrator/Root privileges on Windows when needed
 
-9. **HTTP Header Security Compliance & Hardening Auditor**
-   * *Mechanism:* Pulls remote protocol structures over port 80/443 using native HTTP clients.
-   * *Capabilities:* Systematically tests for the implementation of defensive hardening headers, reporting configuration strings for `Content-Security-Policy`, `Strict-Transport-Security`, `X-Frame-Options`, and `X-Content-Type-Options`.
+---
 
-10. **DNS-over-HTTPS (DoH) Client Resolver Subsystem**
-    * *Mechanism:* Encapsulates secure name resolution lookups inside encrypted outbound port 443 packets targeting Cloudflare public nameservers.
-    * *Capabilities:* Bypasses localized corporate firewall blocks or DNS cache hijacking attempts by explicitly pulling wireformat or JSON DNS mappings (`A`, `AAAA`, `MX`, `TXT`) securely.
+## INSTALLATION
 
-### 🔍 Sub-Directory 02: External OSINT & Target Record Profilers
+### Prerequisites
 
+- Python 3.8 or higher
+- pip package manager
+- Git (for cloning)
 
-11. **Sherlock Username Account Tracer**
-    * *Mechanism:* Automates external python project execution contexts using unmanaged subprocess wrappers.
-    * *Capabilities:* Maps system environmental path boundaries to launch global account profile audits targeting specific handles across hundreds of social networks simultaneously.
+### Setup
 
-12. **PhoneInfoga Telecom Target Scanner**
-    * *Mechanism:* Executes compiled Go binary packages natively using subprocess process pipes.
-    * *Capabilities:* Passes target international telephone records directly to local binaries to trace structural data and telecom provider targets safely.
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/cybertool.git
+cd cybertool
 
-13. **Holehe Email Platform Account Auditor**
-    * *Mechanism:* Launches targeted password reset endpoint validation calls through system subprocess shells.
-    * *Capabilities:* Isolates whether a target email address has active accounts registered across over 120 major global web platforms.
+# Install Python dependencies
+pip install -r requirements.txt
 
-14. **Socialscan Concurrent Identity Profiler**
-    * *Mechanism:* Wraps around execution loops of the Socialscan platform concurrently.
-    * *Capabilities:* Validates exact username and email signature visibility configurations across target spaces with high accuracy.
+# Or install manually
+pip install colorama requests fade beautiful-table rich
+```
 
-15. **Live Online Data Breach Explorer**
-    * *Mechanism:* Communicates with public privacy-respecting breach aggregation frameworks (`XposedOrNot`) over HTTPS clients.
-    * *Capabilities:* Queries historical records to check if a specific email handle has been compromised in known corporate data exposures, listing specific breach source indices.
+### Optional Dependencies
 
-16. **Anonymized Password Exposure Auditor**
-    * *Mechanism:* Implements k-anonymity matching models by hashing password targets into localized SHA-1 string signatures.
-    * *Capabilities:* Extracts the first 5 characters of the password hash to query the `HaveIBeenPwned` range API. Receives the matching suffixes securely, preventing cleartext credentials or complete hash fields from ever traveling across local network boundaries.
+Some modules require additional tools:
 
-17. **Tor Exit Node Network Threat Intelligence Node Validator**
-    * *Mechanism:* Establishes standard HTTP connections to the official Tor Project network directory registries.
-    * *Capabilities:* Synchronizes an active in-memory set of verified relay nodes to check incoming or target IP addresses, immediately flagging whether traffic originates from an anonymized proxy gateway.
+- **Sherlock:** `pip install sherlock`
+- **PhoneInfoga:** Requires Go installation
+- **Holehe:** `pip install holehe`
+- **Socialscan:** `pip install socialscan`
+- **Nmap:** Required for advanced port scanning
+- **Wireshark/TShark:** Required for packet monitoring
+- **Node.js & Vercel CLI:** Required for Image Logger deployment (`npm i -g vercel`)
 
-18. **Online IP Geolocation & Autonomous System (ASN) Metadata Explorer**
-    * *Mechanism:* Parses geo-distribution tables passively using secure API connections against public registries.
-    * *Capabilities:* Discovers country profiles, regional zones, coordinates, exact timezones, internet service provider identifiers, and Autonomous System Numbers (ASN).
+---
 
-19. * *Mechanism:* Executes local string transformations through internationalized domain codec matrices (`idna`).
-    * *Capabilities:* Translates domains between Unicode and Punycode format layers, systematically detecting spoofed brand URLs that utilize lookalike non-ASCII internationalized glyphs to trick users.
+## MAIN SYSTEM DIRECTORY CORE
 
-### 🛡️ Sub-Directory 03: Local Data Traffic Monitors, Audits & Utilities
+The main menu serves as the primary navigation hub, organized into 5 operational subdirectories plus a shutdown control.
 
-20. **Inbound Network Packet Monitor Engine**
-    * *Mechanism:* Binds to system hardware interface loopbacks using RAW socket interface attributes (`socket.SOCK_RAW`).
-    * *Capabilities:* Provides low-level sniffer configurations to decode IPv4 packet frames. Unpacks headers in real-time, calculating buffer sizes and outputting protocol 
+```
+[MAIN SYSTEM DIRECTORY CORE]
 
-data columns for TCP, UDP, and ICMP frames.
-21. **Local Directory Source Code 'Secret & Private Key' Leak Scanner**
-    * *Mechanism:* Traverses folder directory structures recursively using file block input streams.
-    * *Capabilities:* Uses optimized regular expressions to flag hardcoded secrets, matching strings for GCP keys, AWS token signatures, private RSA/OpenSSH key block headers, and unencrypted password credentials.
+[1] Sub-Directory 01 // Network Infrastructure & Endpoint Recon Cores
+[2] Sub-Directory 02 // External OSINT & Target Record Profilers
+[3] Sub-Directory 03 // Local Data Traffic Monitors, Audits & Utilities
+[4] Sub-Directory 04 // Advanced Infrastructure Audits & Integrity Cores
+[5] Sub-Directory 05 // Attack Vectors & Exploit Frameworks [SHELL BASELINE]
 
-22. **Cryptographic Hash Signatures Matrix Generation & Token Analyzer**
-    * *Mechanism:* Hooks into the system `hashlib` library offline.
-* Capabilities: Transforms strings into MD5, SHA-1, and SHA-256 signatures, and reconstructs profiles of unknown hashes by assessing character density parameters and structural bit-lengths.
+[SYSTEM SHUTDOWN CONTROL]
+[6] Terminate Active Mainframe Operator Control Session
+```
 
-23. Advanced Local Host Operating System Telemetry Profiler* Mechanism: Pulls system variables via the platform and socket standard architectures.* Capabilities: Compiles device environment statistics, returning kernel architecture tags, operating build versions, processor model types, and current localized LAN loopback configurations.
+---
 
-24. Base64 Cryptographic Processing Matrix* Mechanism: Integrates native Base64 binary transposition codecs.* Capabilities: Securely encodes cleartext strings into standard Base64 representation formats or decodes obfuscated block sequences back to text frames entirely offline.
+## SUB-DIRECTORY 01 — NETWORK INFRASTRUCTURE & ENDPOINT RECON
 
-[25] Local File Integrity Monitor (FIMS Directory Snapshot Tracker)
-    - Mechanism: Encapsulates folder infrastructure maps inside a serialized JSON metadata document (fims_manifest.json).
-    - Capabilities: Performs recursive calculations using SHA-256 data footprints to detect system drift, immediately reporting rows marking unauthorized directory additions, document alterations, or system file deletions.
+**Purpose:** Active network reconnaissance, host discovery, and service enumeration.
 
-[26] SSL/TLS Certificate Expiration & Cipher Suite Auditor- Mechanism: Wraps standard communication transport layers inside an active ssl.create_default_context() engine.- Capabilities: Handshakes with remote server ports to parse ownership data blocks, reporting root certificate authority origins, verification scopes, and precise day counts remaining before expiration.
+### Modules
 
-[27] Host Active Network Connection & Listening Port Profiler- Mechanism: Executes system connection table binaries (netstat or ss) inside safe unmanaged subprocess containers.- Capabilities: Evaluates active process tables to map system listeners, listing bound process identifiers (PIDs), active connection profiles, and protocols.
+#### [1] High-Speed Rainbow Echo Pinger Latency Monitor
+- Measures ICMP echo latency to target hosts
+- Supports continuous ping monitoring with color-coded status
+- Configurable target IP with default fallback
+- Real-time latency display with responsive/non-responsive indicators
 
-[28] Password Complexity & Offline Information Entropy Matrix- Mechanism: Applies mathematical Shannon information entropy formulas (math.log2) completely offline.- Capabilities: Assesses password character diversity arrays, calculating information density bit rankings to define structural brute-force resistance without leaking data.
+#### [2] Reverse DNS Infrastructure Resolver (IP-to-Host PTR Check)
+- Resolves IP addresses to hostnames using reverse DNS
+- Displays PTR record results or indicates missing reverse name pointers
+- Useful for identifying infrastructure ownership
 
-[29] Local Network ARP Table Cache Profiler & Duplicate MAC Auditor- Mechanism: Compiles Layer 2 neighbor state tables using system subprocess execution (arp -a).- Capabilities: Extracts IP-to-MAC hardware groupings and screens the data cache for duplicate MAC occurrences, flagging routing anomalies or spoofing behavior.
+#### [3] Multi-Threaded Target Service Port Scanner & Vulnerability Profiler
+- Scans target hosts for open TCP ports
+- Multi-threaded for high-speed scanning
+- Service version detection and vulnerability profiling
+- Common port-to-service mapping with defensive mitigation hints
+- Adjustable thread count
 
-[30] CIDR Subnet IPv4 Network Range & Mask Calculator- Mechanism: Natively handles logical bit-shifting and mask arithmetic on IPv4 dotted-quad octet bytes.- Capabilities: Resolves CIDR notations to output network boundary addresses, wildcard configuration blocks, broadcast markers, and exact assignable local host counts.
+#### [4] Local Subnet Parallel Ping Sweeper Matrix
+- Discovers active devices on local network segments
+- Parallel ping sweeps across IP ranges
+- Color-coded responsive device detection
+- Subnet calculator for target range generation
 
-🔒 Session Privacy & Logging MechanismsThis application features an unmanaged, automated Thread-Safe Dual-Stream Intercept Logging Engine.Automatic Creation: Upon initialization, the script scans the working folder and natively spins up a local /logs folder.Pristine Cleartext Exports: Everything that prints to your console shell screen is instantly mirrored to a timestamped file (e.g., logs/session_YYYYMMDD_HHMMSS.txt).ANSI Filtering: To ensure professional log readability, an integrated regular expression engine systematically strips out raw layout color escape codes before flushing the text stream to the text file block.
+#### [5] Network Application Service Banner Grabber Auditor
+- Connects to open ports and retrieves service banners
+- Identifies software versions and potential vulnerabilities
+- TCP connection-based banner extraction
+
+#### [6] DNS Reconnaissance Explorer Matrix (AddrInfo Lookup)
+- Performs DNS A/AAAA record lookups
+- Extracts IP addresses and aliases from target domains
+- Uses system `nslookup` or Python socket resolution
+
+#### [7] Passive Domain Subdomain Discovery Engine (via crt.sh Logs)
+- Discovers subdomains through Certificate Transparency logs
+- Queries crt.sh API for historical certificate data
+- Passive reconnaissance without direct target contact
+
+#### [8] Advanced RDAP Registration Infrastructure Allocation Mapper
+- Queries RDAP (Registration Data Access Protocol) for domain registration info
+- Extracts registrar, organization, country, and network allocation data
+- Provides production infrastructure metric data blocks
+
+#### [9] HTTP Header Security Compliance & Hardening Auditor
+- Analyzes HTTP security headers
+- Checks for HSTS, CSP, X-Frame-Options, X-XSS-Protection, etc.
+- Provides mitigation purpose descriptions for each header
+
+#### [10] DNS-over-HTTPS (DoH) Client Resolver Subsystem
+- Performs DNS queries over HTTPS using Cloudflare DoH
+- Encrypted DNS resolution for privacy
+- Returns structured DNS records with TTL data
+
+---
+
+## SUB-DIRECTORY 02 — EXTERNAL OSINT & TARGET RECORD PROFILERS
+
+**Purpose:** Open-source intelligence gathering and target profiling using external tools.
+
+### Modules
+
+#### [1] Sherlock Username Account Tracer (Live Shell Subprocess Launch)
+- Hunts for usernames across 300+ social media platforms
+- Launches Sherlock in a subprocess with colored output
+- Real-time account discovery with site-by-site results
+
+#### [2] PhoneInfoga Telecom Target Scanner (Live Shell Subprocess Launch)
+- Telecom reconnaissance using PhoneInfoga
+- Phone number validation and carrier lookup
+- Number formatting and regional analysis
+
+#### [3] Holehe Email Platform Account Auditor (Live Shell Subprocess Launch)
+- Checks if email addresses are registered on 100+ platforms
+- Uses Holehe to audit email presence across sites
+- Color-coded results for quick analysis
+
+#### [4] Socialscan Concurrent Identity Profiler (Live Shell Subprocess Launch)
+- Concurrent username/email scanning across platforms
+- Multi-threaded profile enumeration
+- Live shell output with progress indicators
+
+#### [5] Live Online Data Breach Explorer & Password Leak Checker
+- Checks email/username against known data breaches
+- Queries breach databases for compromised credentials
+- Provides breach count and exposure details
+
+#### [6] Tor Exit Node Network Threat Intelligence Node Validator
+- Fetches current Tor exit node IPs from dan.me.uk
+- Validates if an IP is a known Tor exit node
+- Threat intelligence for network access control
+
+#### [7] Online IP Geolocation & Autonomous System (ASN) Metadata Explorer
+- Geolocates IP addresses using ip-api.com
+- Returns city, region, country, ISP, ASN, and timezone data
+- JSON-based structured geolocation results
+
+#### [8] IDN Homograph Phishing Domain & Punycode Analyzer
+- Detects internationalized domain name (IDN) homograph attacks
+- Analyzes domains for deceptive Unicode characters
+- Punycode conversion and visual similarity detection
+
+---
+
+## SUB-DIRECTORY 03 — LOCAL DATA TRAFFIC, SECURITY AUDITS & UTILITIES
+
+**Purpose:** Local system analysis, encryption utilities, and traffic monitoring.
+
+### Modules
+
+#### [1] Inbound Network Packet Monitor Engine (Requires Admin Context)
+- Live packet capture and analysis
+- Requires Administrator privileges on Windows
+- Displays source/destination IPs and protocols
+- Real-time traffic monitoring with color-coded output
+
+#### [2] Local Directory Source Code 'Secret & Private Key' Leak Scanner
+- Recursively scans directories for exposed secrets
+- Pattern matching for API keys, tokens, passwords, private keys
+- Supports multiple file extensions: `.env`, `.pem`, `.key`, `.p12`, etc.
+- Base64 pattern detection for encoded secrets
+
+#### [3] Cryptographic Hash Signatures Matrix Generation & Token Analyzer
+- Generates MD5, SHA-1, SHA-256 hashes for files/text
+- Batch hash processing with progress indicators
+- Hash format validation and display
+
+#### [4] Advanced Local Host Operating System Telemetry Profiler
+- Comprehensive system information gathering
+- OS, hostname, architecture, processor, RAM, GPU, network interfaces
+- Formatted table output with all system metrics
+
+#### [5] Base64 Cryptographic Processing Matrix (Data Transformation)
+- Encode/decode text to/from Base64
+- Encrypt/decrypt text with custom password key
+- File encoding/decoding support
+- Stream cipher implementation for text encryption
+
+---
+
+## SUB-DIRECTORY 04 — ADVANCED INFRASTRUCTURE AUDITS & INTEGRITY
+
+**Purpose:** Deep system audits, integrity checking, and network analysis.
+
+### Modules
+
+#### [1] Local File Integrity Monitor (FIMS Directory Snapshot Tracker)
+- Creates baseline snapshots of file integrity
+- MD5 hash tracking for files in specified directories
+- Compares current state against baseline
+- Detects unauthorized file modifications
+
+#### [2] SSL/TLS Certificate Expiration & Cipher Suite Auditor
+- Connects to remote servers and retrieves SSL/TLS certificates
+- Extracts expiration dates, issuers, and subjects
+- Color-coded warnings for expiring certificates
+- Cipher suite enumeration
+
+#### [3] Host Active Network Connection & Listening Port Profiler
+- Displays active network connections using `netstat`
+- Shows local/foreign addresses and connection states
+- Lists listening ports and associated processes
+- Windows-specific process resolution
+
+#### [4] Password Complexity & Offline Information Entropy Matrix
+- Analyzes password strength using zxcvbn algorithm
+- Calculates entropy bits and crack time estimates
+- Checks against common patterns and dictionary words
+- Provides strength score and suggestions
+
+#### [5] Local Network ARP Table Cache Profiler & Duplicate MAC Auditor
+- Displays ARP table entries using `arp -a`
+- Shows IP-to-MAC mappings for local network
+- Identifies potential duplicate MAC address conflicts
+
+#### [6] CIDR Subnet IPv4 Network Range & Mask Calculator
+- Calculates network ranges from CIDR notation
+- Converts subnet masks to wildcard masks
+- Determines network class, host capacity, and broadcast address
+- Supports all valid CIDR prefixes (1-32)
+
+#### [7] UPnP SSDP Local LAN Smart Device Discovery Explorer
+- Discovers UPnP devices on local network
+- SSDP multicast discovery protocol
+- Identifies smart devices, routers, and media servers
+
+#### [8] Local Hosts File DNS Spoofing & Cache Poisoning Auditor
+- Scans local hosts file for suspicious entries
+- Detects potential DNS hijacking or cache poisoning
+- Checks for common phishing/malware domains
+- File hash verification for hosts file integrity
+
+#### [9] MAC Address OUI Vendor Directory Lookup Engine
+- Identifies device manufacturers from MAC addresses
+- OUI (Organizationally Unique Identifier) lookup
+- Supports local ARP table scanning or manual input
+- Vendor name resolution from MAC prefix
+
+---
+
+## SUB-DIRECTORY 05 — ATTACK VECTORS & EXPLOIT FRAMEWORKS
+
+**Purpose:** Controlled attack vectors for authorized security testing.
+
+### Modules
+
+#### [1] Beast Mode (DDoS)
+- Multi-threaded DDoS testing engine
+- **Beast Mode feature:** Hold `1` key to continuously launch attack bursts
+- Press `0` to stop beast mode
+- Proxy support for distributed testing
+- Configurable thread count and target URL
+- Real-time success/failure counters
+
+#### [2] Image Logger
+- Generates image tracking links that log visitor IP addresses
+- Two deployment options:
+  - **Local Server:** Runs on `http://localhost:8080`
+  - **Vercel Deployment:** Auto-deploys to public Vercel URL
+- Displays target GIF with Open Graph tags for Discord/social preview
+- Real-time IP monitoring in mainframe terminal
+- Captures User-Agent, timestamp, and IP on page visit
+- `/api/logs` endpoint for programmatic log access
+
+#### [3] Brute Force
+- Automated password brute forcing with configurable wordlists
+- **Auto wordlist:** Uses `input/brutef.txt` by default
+- Two attack modes:
+  - **Login Form:** POST request brute forcing with custom field names
+  - **Basic Auth:** HTTP Basic Authentication header brute forcing
+- Proxy support with multi-threading
+- Success indicator matching (page text or HTTP status)
+- Real-time cracked/failed counters
+
+#### [4] SMS Spam
+- SMS bombing module with multi-threading
+- Proxy support for rate limit bypass
+- Configurable message count and thread count
+- Real-time send status tracking
+
+#### [5] Email Spam
+- Email flooding module
+- SMTP configuration with custom sender/recipient
+- Multi-threaded sending with proxy support
+- HTML email support
+
+#### [6] Telegram Spam
+- Telegram message automation
+- Token-based authentication
+- Multi-threaded message sending
+- Proxy support
+
+#### [7] Discord Spam
+- Discord channel/User messaging
+- Token-based authentication
+- Multi-threaded spam with proxy rotation
+- Configurable message content and targets
+
+---
+
+## IMAGE LOGGER — VERCEl DEPLOYMENT
+
+The Image Logger can be deployed to Vercel for a public URL that works everywhere, including Discord.
+
+### How It Works
+
+1. **Deployment:** Mainframe auto-deploys `vercel-image-logger/` to Vercel
+2. **Public URL:** Generates a shareable `https://*.vercel.app` link
+3. **Tracking:** When someone opens the link:
+   - Their IP address is logged
+   - User-Agent and timestamp are captured
+   - Data is stored in Vercel's ephemeral `/tmp` storage
+4. **Monitoring:** Mainframe terminal polls `/api/logs` and displays captures in real-time
+5. **Image Preview:** The page serves a GIF directly as `image/gif` for proper Discord preview
+
+### Technical Details
+
+- **Framework:** Vercel Node.js Serverless Function
+- **Image:** `https://c.tenor.com/HtRab3iYiisAAAAC/tenor.gif`
+- **Logs Endpoint:** `https://vercel-image-logger.vercel.app/api/logs`
+- **Response Format:** Direct binary GIF with caching disabled
+- **OG Tags:** Open Graph and Twitter Card meta tags for social previews
+
+### Local vs Vercel
+
+| Feature | Local Server | Vercel Deployment |
+|---------|-------------|-------------------|
+| URL | `localhost:8080` | `*.vercel.app` |
+| Discord Preview | Limited | Full image preview |
+| Accessibility | Local only | Public internet |
+| Logs | In-memory | Vercel `/tmp` (ephemeral) |
+| Monitoring | Live terminal | Live terminal via API |
+
+---
+
+## LOGGING & PRIVACY
+
+### Session Logging
+
+MAINFRAME implements dual-stream logging:
+- All terminal output is captured to `logs/session_YYYYMMDD_HHMMSS.txt`
+- Logs are written in real-time as the tool runs
+- ANSI color codes are stripped from log files for readability
+
+### Privacy Protection
+
+To protect your privacy when sharing this tool:
+
+1. **Logs Directory:** The `logs/` folder is gitignored
+2. **No IP Storage:** The Vercel image logger does not store logs locally
+3. **Ephemeral Storage:** Vercel serverless functions use temporary storage
+4. **Session Isolation:** Each run creates a new timestamped log file
+
+### What Gets Logged
+
+- Terminal output from all modules
+- Image logger captures (Vercel only, not local)
+- Session start/stop timestamps
+- Error messages and stack traces
+
+### What Does NOT Get Logged
+
+- Your personal IP address (unless you test with yourself)
+- Credentials or passwords entered during brute force
+- Target information from recon modules
+- Any data from the `input/` directory
+
+---
+
+## CONFIGURATION & CUSTOMIZATION
+
+### Wordlist Configuration
+
+The Brute Force module automatically uses:
+```
+input/brutef.txt
+```
+
+Place your custom wordlist at this path. One password per line.
+
+### Proxy Configuration
+
+Optional proxy support via:
+```
+input/proxies.txt
+```
+
+Format: One proxy per line (e.g., `http://proxy:port` or `socks5://proxy:port`)
+
+### Settings
+
+Access settings via the main menu or directly in `core/etc/settings.py`:
+- Language preferences (EN/RU)
+- Color schemes
+- Default thread counts
+- Module enable/disable flags
+
+### Module Paths
+
+All modules are loaded from `core/` with independent imports. To disable a module:
+1. Delete or rename its folder under `core/`
+2. The mainframe will skip it gracefully with a "not loaded" message
+
+---
+
+## DEPENDENCIES
+
+### Python Packages
+
+```
+colorama       # Terminal colors
+requests       # HTTP requests
+fade           # ASCII art fading
+beautiful-table # Table formatting
+rich           # Terminal UI (optional)
+```
+
+### External Tools (Optional)
+
+```
+nmap           # Port scanning
+tshark         # Packet capture
+go             # Sherlock, PhoneInfoga
+node.js        # Vercel image logger
+vercel CLI     # Image logger deployment
+```
+
+### Platform-Specific
+
+- **Windows:** `ctypes` for UAC elevation, `GetAsyncKeyState` for beast mode
+- **Linux/macOS:** `subprocess` for system commands, `termios` for key detection
+
+---
+
+## DISCLAIMER
+
+**This tool is for authorized security testing and educational purposes only.**
+
+- Only use on systems you own or have explicit written permission to test
+- Unauthorized access to computer systems is illegal
+- The authors are not responsible for misuse or damage caused by this tool
+- Users assume all liability for their actions
+- Respect all applicable laws and regulations in your jurisdiction
+
+---
+
+## LICENSE
+
+Copyright (C) 2024 un1ucm  
+All rights reserved.
+
+When posting this code on other resources, please indicate the author.
+
+---
+
+*MAINFRAME v5.90 — Comprehensive Security Reconnaissance Engine*
