@@ -47,22 +47,20 @@ session_*.txt
 *.log.*
 
 # Input data - NEVER COMMIT THESE
-input/brutef.txt
-input/proxies.txt
-input/*.txt
-input/excluded_ips.txt
+core/input/
+!core/input/.gitkeep
 
 # Local image logger
 core/image_logger/logs/
 core/image_logger/*.log
 
 # Vercel deployment
-vercel-image-logger/.vercel/
-vercel-image-logger/node_modules/
-vercel-image-logger/.env
-vercel-image-logger/.env.local
-vercel-image-logger/out/
-vercel-image-logger/dist/
+core/vercel-image-logger/.vercel/
+core/vercel-image-logger/node_modules/
+core/vercel-image-logger/.env
+core/vercel-image-logger/.env.local
+core/vercel-image-logger/out/
+core/vercel-image-logger/dist/
 
 # Secrets and credentials
 *.pem
@@ -79,7 +77,7 @@ config/credentials.py
 # Test files
 test_*.py
 *_test.py
-input/test_*.py
+core/input/test_*.py
 
 # Temporary files
 tmp/
@@ -89,3 +87,10 @@ temp/
 *.bak
 *.swp
 *~
+
+# File integrity manifests (generated at runtime)
+fims_manifest.json
+
+# Session and runtime artifacts
+session_*.txt
+*.log.*
