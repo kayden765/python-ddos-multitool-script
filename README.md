@@ -4,6 +4,7 @@
 **Architecture:** Multi-Tier Nested Subsystem Shell (Directory-Driven Layout)  
 **Platform:** Cross-Platform Windows/Linux/macOS  
 **Python:** 3.8+  
+**Tools:** 40-IN-1 Security Platform  
 
 ---
 
@@ -17,7 +18,7 @@
 6. [Sub-Directory 02 — External OSINT & Target Record Profilers](#sub-directory-02--external-osint--target-record-profilers)
 7. [Sub-Directory 03 — Local Data Traffic, Security Audits & Utilities](#sub-directory-03--local-data-traffic-security-audits--utilities)
 8. [Sub-Directory 04 — Advanced Infrastructure Audits & Integrity](#sub-directory-04--advanced-infrastructure-audits--integrity)
-9. [Sub-Directory 05 — Attack Vectors & Exploit Frameworks](#sub-directory-05--attack-vectors--exploit-frameworks)
+9. [Sub-Directory 05 — Attack Vectors, Exploit Frameworks & Defensive Auditing](#sub-directory-05--attack-vectors-exploit-frameworks--defensive-auditing)
 10. [Image Logger — Vercel Deployment](#image-logger--vercel-deployment)
 11. [Logging & Privacy](#logging--privacy)
 12. [Configuration & Customization](#configuration--customization)
@@ -38,7 +39,9 @@ The tool is organized into five primary operational directories, each containing
 
 ```
 cybertool/
-├── mainframe.py                 # Core orchestration engine & UI
+├── mainframe.py                 # Core orchestration engine ^amp; UI
+├── setup.bat                    # Complete Windows installer
+├── requirements.txt             # Python dependencies
 ├── core/
 │   ├── etc/
 │   │   ├── settings.py          # Configuration management
@@ -49,27 +52,15 @@ cybertool/
 │   │   └── bruteforce.py        # Brute force attack module
 │   ├── image_logger/
 │   │   └── imagelogger.py       # Local image logger server
-│   ├── sms_spam/
-│   │   └── sms.py               # SMS bombing module
-│   ├── email_spam/
-│   │   └── email_attack.py      # Email flood module
-│   ├── telegram_spam/
-│   │   └── telegram.py          # Telegram injection module
-│   ├── discord_spam/
-│   │   └── discord.py           # Discord spam module
-│   ├── network/                 # Network recon modules
-│   ├── osint/                   # OSINT modules
-│   ├── utilities/               # Local utility modules
-│   └── advanced/                # Advanced audit modules
-├── vercel-image-logger/
-│   ├── api/
-│   │   └── track.js             # Vercel serverless function
-│   ├── vercel.json              # Vercel routing config
-│   └── package.json             # Project metadata
-├── input/
-│   ├── brutef.txt               # Brute force wordlist
-│   └── proxies.txt              # Proxy list (optional)
-├── logs/                        # Session logs (gitignored)
+│   ├── impacket_scripts/        # Impacket remoting scripts
+│   │   ├── psexec.py
+│   │   └── wmiexec.py
+│   ├── vercel-image-logger/     # Vercel deployment assets
+│   │   ├── api/
+│   │   │   └── track.js
+│   │   ├── vercel.json
+│   │   └── package.json
+│   └── input/                   # User data (gitignored)
 └── README.md
 ```
 
@@ -95,27 +86,84 @@ cybertool/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cybertool.git
+git clone https://github.com/kayden765/python-ddos-multitool-script.git
 cd cybertool
 
 # Install Python dependencies
 pip install -r requirements.txt
-
-# Or install manually
-pip install colorama requests fade beautiful-table rich
 ```
 
-### Optional Dependencies
+### Complete Setup (Recommended)
 
-Some modules require additional tools:
+Run `setup.bat` as Administrator to automatically install all Python dependencies and external tools:
 
-- **Sherlock:** `pip install sherlock`
-- **PhoneInfoga:** Requires Go installation
-- **Holehe:** `pip install holehe`
-- **Socialscan:** `pip install socialscan`
-- **Nmap:** Required for advanced port scanning
-- **Wireshark/TShark:** Required for packet monitoring
-- **Node.js & Vercel CLI:** Required for Image Logger deployment (`npm i -g vercel`)
+```bash
+setup.bat
+```
+
+This will:
+- Install all Python dependencies from `requirements.txt`
+- Install **Impacket** (`psexec.py` / `wmiexec.py`) via pip
+- Download `psexec.py` and `wmiexec.py` to `core/impacket_scripts/`
+- Install **Chocolatey** if not present
+- Install **Hashcat** via Chocolatey
+- Install **Metasploit Framework** (`msfconsole` / `msfvenom`) via Chocolatey
+- Verify all installations and report status
+
+### Manual External Tool Installation
+
+If `setup.bat` does not cover your platform, install these tools manually:
+
+| Tool | Purpose | Install Method |
+|------|---------|----------------|
+| **Impacket** | Administrative remoting (`psexec.py`, `wmiexec.py`) | `pip install impacket` |
+| **Hashcat** | Password compliance auditing | Download from https://hashcat.net/hashcat/ |
+| **Metasploit Framework** | `msfconsole` / `msfvenom` | Download from https://www.metasploit.com/download |
+| **Nmap** | Advanced port scanning and service profiling | `choco install nmap` or download from https://nmap.org/ |
+| **Sherlock** | Username tracing | `pip install sherlock-project` |
+| **PhoneInfoga** | Telecom scanning | Requires Go: `go install github.com/sundowndev/phoneinfoga@latest` |
+| **Holehe** | Email platform auditor | `pip install holehe` |
+| **Socialscan** | Identity profiler | `pip install socialscan` |
+
+Ensure all installed tools are in your system `PATH` so `mainframe.py` can locate them.
+
+### Sub-Directory 05 — Defensive Auditing Tools Installation
+
+The following 5 tools were added to Sub-Directory 05 for defensive auditing and baseline validation:
+
+#### 1. Metasploit Framework Console (`msfconsole`)
+- **Purpose:** Systems administrators use msfconsole to validate known infrastructure configurations, test network boundaries against documented service behaviors, and confirm patch integrity through controlled exploitation modules in isolated lab environments.
+- **Installation:**
+  - Windows: Download the official installer from https://www.metasploit.com/download
+  - Or use Chocolatey: `choco install metasploit`
+  - After installation, ensure `msfconsole` and `msfvenom` are in your system `PATH`
+- **Verification:** Run `msfconsole --version` to confirm installation
+
+#### 2. Msfvenom Network Egress Verification Tool (`msfvenom`)
+- **Purpose:** Generates synthetic network communication payloads to test whether internal IDS and corporate firewalls successfully alert on or block abnormal outbound connections.
+- **Installation:** Bundled with Metasploit Framework. Install Metasploit as described above.
+- **Verification:** Run `msfvenom --help` to confirm installation
+
+#### 3. Hashcat Password-Strength Compliance Auditor (`hashcat`)
+- **Purpose:** Offline cryptographic verification core used to cross-reference enterprise database hashes against common dictionary lists, ensuring internal passwords adhere to corporate complexity standards.
+- **Installation:**
+  - Windows: Download from https://hashcat.net/hashcat/
+  - Or use Chocolatey: `choco install hashcat`
+  - Extract the archive and add the directory to your system `PATH`
+- **Verification:** Run `hashcat --version` to confirm installation
+
+#### 4. Impacket Administrative Remoting Suite (`psexec.py` / `wmiexec.py`)
+- **Purpose:** Evaluates local credential hygiene, auditing whether standard enterprise service accounts have excessive implicit cross-network permissions or misconfigured access tokens.
+- **Installation:**
+  - Install via pip: `pip install impacket`
+  - The mainframe automatically downloads `psexec.py` and `wmiexec.py` from the official Impacket repository to `core/impacket_scripts/`
+  - No additional PATH configuration needed; the mainframe resolves these scripts automatically
+- **Verification:** Run `python -c "from impacket import version; print(version.__version__)"` to confirm the library is installed
+
+#### 5. Real-Time Security Log Diagnostic Module
+- **Purpose:** Defensive telemetry module used to tail, read, and stream local audit text logs and session history outputs to the operator in real time.
+- **Installation:** No external dependencies required. This is a pure-Python module built into `mainframe.py`.
+- **Verification:** Select option [8] from Sub-Directory 05 and provide a valid log file path to test streaming.
 
 ---
 
@@ -128,9 +176,9 @@ The main menu serves as the primary navigation hub, organized into 5 operational
 
 [1] Sub-Directory 01 // Network Infrastructure & Endpoint Recon Cores
 [2] Sub-Directory 02 // External OSINT & Target Record Profilers
-[3] Sub-Directory 03 // Local Data Traffic Monitors, Audits & Utilities
+[3] Sub-Directory 03 // Local Data Traffic, Security Audits & Utilities
 [4] Sub-Directory 04 // Advanced Infrastructure Audits & Integrity Cores
-[5] Sub-Directory 05 // Attack Vectors & Exploit Frameworks [SHELL BASELINE]
+[5] Sub-Directory 05 // Attack Vectors, Exploit Frameworks & Defensive Auditing
 
 [SYSTEM SHUTDOWN CONTROL]
 [6] Terminate Active Mainframe Operator Control Session
@@ -173,30 +221,30 @@ The main menu serves as the primary navigation hub, organized into 5 operational
 - Identifies software versions and potential vulnerabilities
 - TCP connection-based banner extraction
 
-#### [6] DNS Reconnaissance Explorer Matrix (AddrInfo Lookup)
-- Performs DNS A/AAAA record lookups
-- Extracts IP addresses and aliases from target domains
-- Uses system `nslookup` or Python socket resolution
-
-#### [7] Passive Domain Subdomain Discovery Engine (via crt.sh Logs)
+#### [6] Passive Domain Subdomain Discovery Engine (via crt.sh Logs)
 - Discovers subdomains through Certificate Transparency logs
 - Queries crt.sh API for historical certificate data
 - Passive reconnaissance without direct target contact
 
-#### [8] Advanced RDAP Registration Infrastructure Allocation Mapper
+#### [7] Advanced RDAP Registration Infrastructure Allocation Mapper
 - Queries RDAP (Registration Data Access Protocol) for domain registration info
 - Extracts registrar, organization, country, and network allocation data
 - Provides production infrastructure metric data blocks
 
-#### [9] HTTP Header Security Compliance & Hardening Auditor
+#### [8] HTTP Header Security Compliance & Hardening Auditor
 - Analyzes HTTP security headers
 - Checks for HSTS, CSP, X-Frame-Options, X-XSS-Protection, etc.
 - Provides mitigation purpose descriptions for each header
 
-#### [10] DNS-over-HTTPS (DoH) Client Resolver Subsystem
+#### [9] DNS-over-HTTPS (DoH) Client Resolver Subsystem
 - Performs DNS queries over HTTPS using Cloudflare DoH
 - Encrypted DNS resolution for privacy
 - Returns structured DNS records with TTL data
+
+#### [10] IP Address Geolocation & Metadata Lookup
+- Geolocates IP addresses using ip-api.com
+- Returns city, region, country, ISP, ASN, and timezone data
+- JSON-based structured geolocation results
 
 ---
 
@@ -292,7 +340,7 @@ The main menu serves as the primary navigation hub, organized into 5 operational
 
 #### [1] Local File Integrity Monitor (FIMS Directory Snapshot Tracker)
 - Creates baseline snapshots of file integrity
-- MD5 hash tracking for files in specified directories
+- SHA-256 hash tracking for files in specified directories
 - Compares current state against baseline
 - Detects unauthorized file modifications
 
@@ -309,8 +357,8 @@ The main menu serves as the primary navigation hub, organized into 5 operational
 - Windows-specific process resolution
 
 #### [4] Password Complexity & Offline Information Entropy Matrix
-- Analyzes password strength using zxcvbn algorithm
-- Calculates entropy bits and crack time estimates
+- Analyzes password strength using Shannon entropy calculations
+- Calculates entropy bits and character pool complexity
 - Checks against common patterns and dictionary words
 - Provides strength score and suggestions
 
@@ -344,9 +392,9 @@ The main menu serves as the primary navigation hub, organized into 5 operational
 
 ---
 
-## SUB-DIRECTORY 05 — ATTACK VECTORS & EXPLOIT FRAMEWORKS
+## SUB-DIRECTORY 05 — ATTACK VECTORS, EXPLOIT FRAMEWORKS & DEFENSIVE AUDITING
 
-**Purpose:** Controlled attack vectors for authorized security testing.
+**Purpose:** Controlled attack vectors for authorized security testing, plus defensive auditing and baseline validation tools.
 
 ### Modules
 
@@ -354,7 +402,6 @@ The main menu serves as the primary navigation hub, organized into 5 operational
 - Multi-threaded DDoS testing engine
 - **Beast Mode feature:** Hold `1` key to continuously launch attack bursts
 - Press `0` to stop beast mode
-- Proxy support for distributed testing
 - Configurable thread count and target URL
 - Real-time success/failure counters
 
@@ -370,37 +417,59 @@ The main menu serves as the primary navigation hub, organized into 5 operational
 
 #### [3] Brute Force
 - Automated password brute forcing with configurable wordlists
-- **Auto wordlist:** Uses `input/brutef.txt` by default
+- **Auto wordlist:** Uses `core/input/brutef.txt` by default
 - Two attack modes:
   - **Login Form:** POST request brute forcing with custom field names
   - **Basic Auth:** HTTP Basic Authentication header brute forcing
-- Proxy support with multi-threading
 - Success indicator matching (page text or HTTP status)
 - Real-time cracked/failed counters
 
-#### [4] SMS Spam
-- SMS bombing module with multi-threading
-- Proxy support for rate limit bypass
-- Configurable message count and thread count
-- Real-time send status tracking
+#### [4] Metasploit Framework Console Interface (`msfconsole`)
+- **Legitimate Purpose:** Systems administrators use msfconsole to validate known infrastructure configurations, test network boundaries against documented service behaviors, and confirm patch integrity through controlled exploitation modules in isolated lab environments.
+- **Script Role:** An interactive choice that maps inputs directly to call `msfconsole` inline within the current terminal loop.
+- Dynamically resolves `msfconsole` from system PATH via `shutil.which`
+- Launches the full Metasploit console inline (no detached windows)
+- Type `exit` or `Ctrl+C` to return to menu
 
-#### [5] Email Spam
-- Email flooding module
-- SMTP configuration with custom sender/recipient
-- Multi-threaded sending with proxy support
-- HTML email support
+#### [5] Msfvenom Network Egress Verification Tool (`msfvenom`)
+- **Legitimate Purpose:** A baseline boundary-testing companion utility used to generate synthetic network communication payloads. It tests if internal intrusion detection systems (IDS) and corporate firewalls successfully alert on or block abnormal outbound connections.
+- **Script Role:** A prompt wizard gathering local loopback parameters (like LHOST, LPORT, format) to execute an msfvenom syntax call directly to an output file.
+- Interactive wizard for payload generation
+- Prompts for LHOST, LPORT, payload format (py/php/exe/elf/asp/war), and output file path
+- Writes payload directly to disk for controlled egress testing
+- Validates binary existence before execution
 
-#### [6] Telegram Spam
-- Telegram message automation
-- Token-based authentication
-- Multi-threaded message sending
-- Proxy support
+#### [6] Hashcat Password-Strength Compliance Auditor (`hashcat`)
+- **Legitimate Purpose:** An administrative offline cryptographic verification core used to cross-reference enterprise database hashes against common dictionary lists, ensuring internal passwords adhere to corporate complexity standards.
+- **Script Role:** An inline interface prompting for target database file paths and wordlists to call the local `hashcat` command.
+- Prompts for hash file path and wordlist path
+- Validates both files exist before execution
+- Supports configurable hash mode (MD5, SHA1, NTLM, etc.)
+- Runs hashcat inline in the current terminal session
 
-#### [7] Discord Spam
-- Discord channel/User messaging
-- Token-based authentication
-- Multi-threaded spam with proxy rotation
-- Configurable message content and targets
+#### [7] Impacket Administrative Remoting Suite (`psexec.py` / `wmiexec.py`)
+- **Legitimate Purpose:** Used to evaluate local credential hygiene, auditing whether standard enterprise service accounts have excessive implicit cross-network permissions or misconfigured access tokens.
+- **Script Role:** A clean parameter wrapper that structures a unified terminal command line call to standard Impacket Python scripts using the user's input.
+- Supports both `psexec.py` and `wmiexec.py`
+- Prompts for target host, username, password/hash, and optional domain
+- Resolves script paths from PATH, pipx, or common Impacket install locations
+- Executes inline via `subprocess.run` with live output
+
+#### [8] Real-Time Security Log Diagnostic Module
+- **Legitimate Purpose:** A defensive telemetry module used to tail, read, and stream local audit text logs and session history outputs to the operator in real time.
+- **Script Role:** A loop that prints incoming log updates directly to the console display.
+- Prompts for a local log file path
+- Streams new log lines to the console in real-time
+- Pure Python implementation (no external dependencies)
+- Press `Ctrl+C` to stop streaming
+
+#### [9] Nmap Advanced Port Scanner & Service Profiler
+- **Legitimate Purpose:** Industry-standard port scanning and network discovery for authorized infrastructure assessment and firewall rule validation.
+- **Script Role:** A wrapper that invokes `nmap` inline with scan profiles for quick, full, service-detection, OS fingerprinting, and aggressive scans.
+- Prompts for target IP/hostname/CIDR
+- Scan presets: Quick TCP, Full TCP, Service/version detection, OS fingerprinting, Aggressive, Custom args
+- Output streams directly to the mainframe terminal
+- Requires `nmap` binary in system PATH
 
 ---
 
@@ -410,12 +479,12 @@ The Image Logger can be deployed to Vercel for a public URL that works everywher
 
 ### How It Works
 
-1. **Deployment:** Mainframe auto-deploys `vercel-image-logger/` to Vercel
+1. **Deployment:** Mainframe auto-deploys `core/vercel-image-logger/` to Vercel
 2. **Public URL:** Generates a shareable `https://*.vercel.app` link
 3. **Tracking:** When someone opens the link:
-   - Their IP address is logged
-   - User-Agent and timestamp are captured
-   - Data is stored in Vercel's ephemeral `/tmp` storage
+    - Their IP address is logged
+    - User-Agent and timestamp are captured
+    - Data is stored in Vercel's ephemeral `/tmp` storage
 4. **Monitoring:** Mainframe terminal polls `/api/logs` and displays captures in real-time
 5. **Image Preview:** The page serves a GIF directly as `image/gif` for proper Discord preview
 
@@ -456,6 +525,7 @@ To protect your privacy when sharing this tool:
 2. **No IP Storage:** The Vercel image logger does not store logs locally
 3. **Ephemeral Storage:** Vercel serverless functions use temporary storage
 4. **Session Isolation:** Each run creates a new timestamped log file
+5. **Input Directory:** The `core/input/` folder is gitignored to prevent accidental commit of wordlists, tokens, or IP lists
 
 ### What Gets Logged
 
@@ -469,7 +539,7 @@ To protect your privacy when sharing this tool:
 - Your personal IP address (unless you test with yourself)
 - Credentials or passwords entered during brute force
 - Target information from recon modules
-- Any data from the `input/` directory
+- Any data from the `core/input/` directory
 
 ---
 
@@ -479,27 +549,16 @@ To protect your privacy when sharing this tool:
 
 The Brute Force module automatically uses:
 ```
-input/brutef.txt
+core/input/brutef.txt
 ```
 
 Place your custom wordlist at this path. One password per line.
 
-### Proxy Configuration
-
-Optional proxy support via:
-```
-input/proxies.txt
-```
-
-Format: One proxy per line (e.g., `http://proxy:port` or `socks5://proxy:port`)
-
-### Settings
+### Language Settings
 
 Access settings via the main menu or directly in `core/etc/settings.py`:
 - Language preferences (EN/RU)
 - Color schemes
-- Default thread counts
-- Module enable/disable flags
 
 ### Module Paths
 
@@ -514,21 +573,34 @@ All modules are loaded from `core/` with independent imports. To disable a modul
 ### Python Packages
 
 ```
-colorama       # Terminal colors
-requests       # HTTP requests
-fade           # ASCII art fading
-beautiful-table # Table formatting
-rich           # Terminal UI (optional)
+colorama==0.4.6       # Terminal colors
+requests==2.31.0      # HTTP requests
+fade==0.0.9           # ASCII art fading
+beautifulsoup4==4.12.3 # HTML parsing
+fake-useragent==1.5.1 # Random user agents
+aiohttp==3.9.5        # Async HTTP
+urllib3==2.2.3        # HTTP client
+pythonping==1.0.0     # ICMP ping wrapper
+impacket==0.12.0      # Impacket remoting scripts
 ```
 
-### External Tools (Optional)
+### External Tools (Optional / Auto-Installed)
 
 ```
-nmap           # Port scanning
-tshark         # Packet capture
-go             # Sherlock, PhoneInfoga
-node.js        # Vercel image logger
-vercel CLI     # Image logger deployment
+msfconsole            # Metasploit Framework console
+msfvenom              # Metasploit payload generator
+hashcat               # Password compliance auditor
+psexec.py             # Impacket SMB exec
+wmiexec.py            # Impacket WMI exec
+sherlock              # Username tracer
+phoneinfoga           # Telecom scanner
+holehe                # Email auditor
+socialscan            # Identity profiler
+nmap                  # Port scanning
+tshark                # Packet capture
+go                    # Sherlock, PhoneInfoga runtime
+node.js               # Vercel image logger
+vercel CLI            # Image logger deployment
 ```
 
 ### Platform-Specific
