@@ -50,6 +50,14 @@ session_*.txt
 core/input/
 !core/input/.gitkeep
 
+# IP and block lists - NEVER COMMIT THESE
+*blocked*.txt
+*blocked*.json
+*ips*.txt
+*ips*.json
+*excluded*.txt
+*excluded*.json
+
 # Local image logger
 core/image_logger/logs/
 core/image_logger/*.log
